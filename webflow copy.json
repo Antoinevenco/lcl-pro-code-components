@@ -1,0 +1,15 @@
+{
+  "library": {
+    "name": "LCL Pro",
+    "components": ["./components/**/*.webflow.@(js|jsx|mjs|ts|tsx)"],
+    "description": "",
+    "id": "lcl-pro"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1777884336876,
+      "version": "1.21.0"
+    }
+  }
+}

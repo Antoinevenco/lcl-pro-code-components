@@ -1,0 +1,27 @@
+import type { IconProps } from "./Icon.types"
+
+export function MenuIcon({ size = 24, className, title }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+      className={className}
+      style={{ display: "block", flexShrink: 0 }}
+    >
+      {title ? <title>{title}</title> : null}
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M3 6C3 5.44772 3.44772 5 4 5H20C20.5523 5 21 5.44772 21 6C21 6.55228 20.5523 7 20 7H4C3.44772 7 3 6.55228 3 6ZM3 18C3 17.4477 3.44772 17 4 17H14C14.5523 17 15 17.4477 15 18C15 18.5523 14.5523 19 14 19H4C3.44772 19 3 18.5523 3 18ZM4 11C3.44772 11 3 11.4477 3 12C3 12.5523 3.44772 13 4 13H10C10.5523 13 11 12.5523 11 12C11 11.4477 10.5523 11 10 11H4Z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
+export default MenuIcon

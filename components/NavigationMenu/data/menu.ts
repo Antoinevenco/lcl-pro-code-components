@@ -1,4 +1,9 @@
-import type { FeatureCard, MenuTree, TopBarLink } from "../NavigationMenu.types"
+import type {
+  EngagementCard,
+  FeatureCard,
+  MenuTree,
+  TopBarLink,
+} from "../NavigationMenu.types"
 
 export const topBarLinks: TopBarLink[] = [
   { label: "Particulier", href: "https://www.lcl.fr/" },
@@ -24,7 +29,37 @@ const comptesCards: FeatureCard[] = [
   },
 ]
 
-const savoirFaireCards: FeatureCard[] = [
+const pourquoiEngagementCards: EngagementCard[] = [
+  {
+    title: "LCL Partenaire du Tour de France",
+    ctaLabel: "En savoir plus",
+    ctaHref: "#",
+  },
+  {
+    title: "Nos labélisations",
+    ctaLabel: "En savoir plus",
+    ctaHref: "#",
+  },
+]
+
+const pourquoiFeatureCards: FeatureCard[] = [
+  {
+    title: "Les cahiers de l'energie d'entreprendre",
+    body: "Un ensemble d'actions pensées pour être aux côtés des entrepreneurs au quotidien.",
+    ctaLabel: "Bouton",
+    ctaHref: "#",
+    iconBg: "white",
+  },
+  {
+    title: "Ouvrir un compte",
+    body: "Ouvrez votre compte pro en ligne en moins de 10 minutes ou prenez rendez-vous en agence pour rencontrer l'un de nos conseillers",
+    ctaLabel: "Bouton",
+    ctaHref: "#",
+    iconBg: "white",
+  },
+]
+
+const savoirFaireEssentielsCards: FeatureCard[] = [
   {
     title: "Prêt Professionnel Express",
     body: "Financez vos investissements avec un déblocage des fonds en 48h.",
@@ -35,6 +70,23 @@ const savoirFaireCards: FeatureCard[] = [
   {
     title: "Besoin de conseils ?",
     body: "Votre conseiller LCL vous présentera des solutions adaptées à votre développement.",
+    ctaLabel: "Bouton",
+    ctaHref: "#",
+    iconBg: "white",
+  },
+]
+
+const savoirFaireDifferenciantsCards: FeatureCard[] = [
+  {
+    title: "Care Entrepreneurs",
+    body: "Un accompagnement humain et partenarial unique sur le marché bancaire.",
+    ctaLabel: "Bouton",
+    ctaHref: "#",
+    iconBg: "white",
+  },
+  {
+    title: "Portail Entrepreneur LCL",
+    body: "Tous les outils, simulateurs, partenaires et conseils pour créer et gérer votre entreprise.",
     ctaLabel: "Bouton",
     ctaHref: "#",
     iconBg: "white",
@@ -97,10 +149,10 @@ export const defaultMenu: MenuTree = [
     label: "Nos savoir-faire",
     ctaLabel: "Tout nos savoir-faire",
     ctaHref: "#",
-    featureCards: savoirFaireCards,
     tabs: [
       {
         label: "Nos essentiels",
+        featureCards: savoirFaireEssentielsCards,
         sections: [
           {
             label: "Nos essentiels",
@@ -139,29 +191,41 @@ export const defaultMenu: MenuTree = [
       },
       {
         label: "Nos différenciants",
+        featureCards: savoirFaireDifferenciantsCards,
         sections: [
           {
-            label: "Nos différenciants",
+            label: "Ce qui nous distingue",
             variant: "primary",
             ctaLabel: "Tout nos savoir-faire",
             ctaHref: "#",
             items: [
               {
-                label: "Banque internationale",
+                label: "Fidéliser ses salariés",
                 href: "#",
-                description: "Solutions pour vos opérations à l'international",
+                description:
+                  "Épargne salariale, intéressement et participation, assurance collective …",
               },
               {
-                label: "Banque d'affaires",
+                label: "Libérer votre esprit d'entreprendre",
                 href: "#",
-                description: "Accompagnement haut de bilan et grandes opérations",
+                description:
+                  "Care entrepreneur, un programme innovant permettant d'alléger la charge mentale des entrepreneurs",
+              },
+              {
+                label: "Accompagner vos transitions",
+                href: "#",
+                description:
+                  "Transition écologique, mobilité douce, accompagnement à la reprise/cession d'entreprise via e-RIS, etc.",
               },
             ],
           },
           {
             label: "Simuler",
             variant: "list",
-            items: [{ label: "Simulateur prêt professionnel", href: "#" }],
+            items: [
+              { label: "Simuler votre cessation d'activité", href: "#" },
+              { label: "Simuler votre coût à l'embauche", href: "#" },
+            ],
           },
         ],
       },
@@ -169,140 +233,87 @@ export const defaultMenu: MenuTree = [
   },
   {
     label: "Pour qui ?",
-    featureCards: savoirFaireCards,
-    tabs: [
+    featureCards: [
+      {
+        title: "Professions de santé",
+        body: "Offre dédiée médecins, kinés, infirmières, dentistes — TierSanté, gestion tiers-payant PAYMED, 3XCB.",
+        ctaLabel: "Bouton",
+        ctaHref: "#",
+        iconBg: "white",
+      },
+    ],
+    sections: [
       {
         label: "Profil",
-        sections: [
-          {
-            label: "Vous êtes",
-            variant: "primary",
-            items: [
-              {
-                label: "Indépendant",
-                href: "#",
-                description: "Auto-entrepreneur, profession libérale, freelance",
-              },
-              {
-                label: "Artisan ou commerçant",
-                href: "#",
-                description: "TPE, boutique, atelier",
-              },
-              {
-                label: "Dirigeant de TPE / PME",
-                href: "#",
-                description: "Société, holding, groupe",
-              },
-              {
-                label: "Créateur ou repreneur",
-                href: "#",
-                description: "Lancement, reprise d'entreprise",
-              },
-            ],
-          },
-          {
-            label: "Simuler",
-            variant: "list",
-            items: [
-              { label: "Simulateur prêt professionnel", href: "#" },
-              { label: "MAPi : Simulateur aides publiques", href: "#" },
-            ],
-          },
+        variant: "primary",
+        items: [
+          { label: "Créateur / indépendant", href: "#" },
+          { label: "TPE", href: "#" },
+          { label: "PME / ETI", href: "#" },
+          { label: "Start-up", href: "#" },
+          { label: "Associations et fondations", href: "#" },
         ],
       },
       {
         label: "Métiers",
-        sections: [
-          {
-            label: "Votre activité",
-            variant: "primary",
-            items: [
-              {
-                label: "Santé",
-                href: "#",
-                description: "Médecins, infirmiers, pharmaciens",
-              },
-              { label: "Juridique", href: "#", description: "Avocats, notaires, huissiers" },
-              { label: "Conseil", href: "#", description: "Consultants, experts-comptables" },
-              {
-                label: "Commerce et artisanat",
-                href: "#",
-                description: "Restauration, BTP, services",
-              },
-              {
-                label: "Agriculture",
-                href: "#",
-                description: "Exploitations, viticulteurs",
-              },
-            ],
-          },
-          {
-            label: "Simuler",
-            variant: "list",
-            items: [
-              { label: "Simulateur prêt professionnel", href: "#" },
-              { label: "Comparateur de carte", href: "#" },
-            ],
-          },
+        variant: "primary",
+        items: [
+          { label: "Santé", href: "#" },
+          { label: "Droit, chiffre et conseil", href: "#" },
+          { label: "Artisans et commerçants", href: "#" },
+          { label: "Services", href: "#" },
+          { label: "Franchise", href: "#" },
+        ],
+      },
+      {
+        label: "Simuler",
+        variant: "list",
+        items: [
+          { label: "Simulateur prêt professionnel", href: "#" },
+          { label: "MAPi : Simulateur aides publiques", href: "#" },
         ],
       },
     ],
   },
   {
     label: "Pourquoi LCL ?",
-    featureCards: savoirFaireCards,
-    tabs: [
+    ctaLabel: "Tout savoir sur LCL",
+    ctaHref: "#",
+    sections: [
       {
-        label: "Notre engagement",
-        sections: [
+        label: "LCL, Pour aller de l'avant.",
+        variant: "primary",
+        ctaLabel: "Tout savoir sur LCL",
+        ctaHref: "#",
+        items: [
           {
-            label: "Proximité",
-            variant: "primary",
-            items: [
-              { label: "Réseau d'agences", href: "#", description: "1600 agences en France" },
-              { label: "Conseiller dédié", href: "#", description: "Un interlocuteur unique" },
-            ],
+            label: "Une histoire de confiance",
+            href: "#",
+            description: "En agence ou 100% en ligne avec L by LCL",
           },
           {
-            label: "Nos engagements",
-            variant: "list",
-            items: [
-              { label: "Engagement RSE", href: "#" },
-              { label: "Charte qualité", href: "#" },
-              { label: "Diversité et inclusion", href: "#" },
-            ],
-          },
-        ],
-      },
-      {
-        label: "Nos expertises",
-        sections: [
-          {
-            label: "Métiers",
-            variant: "primary",
-            items: [
-              {
-                label: "Banque d'affaires",
-                href: "#",
-                description: "Conseil et financement",
-              },
-              {
-                label: "International",
-                href: "#",
-                description: "Présence dans 70 pays",
-              },
-            ],
+            label: "L'Energie d'entreprendre",
+            href: "#",
+            description:
+              "Innover et co-construire des offres qui résonnent sur le marché",
           },
           {
-            label: "Nos engagements",
-            variant: "list",
-            items: [
-              { label: "Finance durable", href: "#" },
-              { label: "Innovation", href: "#" },
-            ],
+            label: "Une banque omnicanale",
+            href: "#",
+            description:
+              "Une banque présente au plus proche des clients de leurs projets",
+          },
+          {
+            label: "Une proximité relationnelle",
+            href: "#",
+            description:
+              "Des espaces dédiés aux professionnels dans nos 1 600 agences, un service client humain élu Service Client de l'Année 2026",
           },
         ],
       },
     ],
+    engagementsLabel: "Nos engagements",
+    engagementCards: pourquoiEngagementCards,
+    featureCards: pourquoiFeatureCards,
   },
 ]

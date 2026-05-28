@@ -1,3 +1,4 @@
+import { useEffect, useRef } from "react"
 import type { MenuEntry, MenuSection, MenuTab } from "../NavigationMenu.types"
 import { Chevron } from "../primitives/Chevron"
 import styles from "../styles"
@@ -44,13 +45,27 @@ function RootScreen({
   secondaryLinks,
   onPushEntry,
 }: RootScreenProps) {
+  const tabsRef = useRef<HTMLDivElement>(null)
+  const currentTabRef = useRef<HTMLAnchorElement>(null)
+
+  // Anchor the horizontal scroll so the active top-nav item is in view by
+  // default — the rail is left-aligned + horizontally scrollable, and the
+  // "Professionnel" tab is the one users land on for this site.
+  useEffect(() => {
+    const scroller = tabsRef.current
+    const active = currentTabRef.current
+    if (!scroller || !active) return
+    scroller.scrollLeft = active.offsetLeft - scroller.clientLeft
+  }, [])
+
   return (
     <>
-      <div className={styles.mobileTabs}>
+      <div className={styles.mobileTabs} ref={tabsRef}>
         {topBarLinks.map((l) => (
           <a
             key={l.label}
             href={l.href}
+            ref={l.current ? currentTabRef : undefined}
             className={styles.mobileTab}
             data-current={l.current ? "true" : undefined}
             aria-current={l.current ? "page" : undefined}
@@ -84,6 +99,8 @@ function RootScreen({
           )
         })}
       </ul>
+
+      <hr className={styles.divider} />
 
       <ul className={styles.mobileList}>
         {secondaryLinks.map((l) => (
@@ -126,15 +143,40 @@ function EntryScreen({ entry, onBack, onPushTab }: EntryScreenProps) {
   }
 
   const sections = entry.sections ?? []
-  const primary =
-    sections.find((s) => (s.variant ?? "primary") === "primary") ?? sections[0]
-  const list = sections.find((s) => s.variant === "list") ?? sections[1]
+  const primaries = sections.filter((s) => (s.variant ?? "primary") === "primary")
+  const list = sections.find((s) => s.variant === "list")
+  const hasEngagements = !!(entry.engagements || entry.engagementCards?.length)
 
   return (
     <>
       <SubHeader title={entry.label} onBack={onBack} />
-      {primary ? <SectionList section={primary} /> : null}
+      {primaries.map((section, i) => (
+        <SectionList key={section.label + i} section={section} />
+      ))}
+      {hasEngagements ? <EngagementsBlock entry={entry} /> : null}
       {list ? <SimulerCard section={list} /> : null}
+    </>
+  )
+}
+
+function EngagementsBlock({ entry }: { entry: MenuEntry }) {
+  return (
+    <>
+      {entry.engagementsLabel ? (
+        <h3 className={styles.mobileListSection}>{entry.engagementsLabel}</h3>
+      ) : null}
+      {entry.engagements ?? (
+        <ul className={styles.mobileList}>
+          {(entry.engagementCards ?? []).map((card) => (
+            <li key={card.title}>
+              <a className={styles.mobileListItem} href={card.ctaHref}>
+                <span>{card.title}</span>
+                <Chevron />
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }

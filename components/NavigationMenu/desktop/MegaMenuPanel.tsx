@@ -1,11 +1,16 @@
-import { useState } from "react"
+import { useState, type ReactNode } from "react"
 import * as Tabs from "@radix-ui/react-tabs"
 import clsx from "clsx"
 import styles from "../styles"
 import { MenuColumn } from "./MenuColumn"
 import { MenuTabRail } from "./MenuTabRail"
 import { FeatureCard } from "../primitives/FeatureCard"
-import type { MenuEntry, MenuSection } from "../NavigationMenu.types"
+import { EngagementCard } from "../primitives/EngagementCard"
+import type {
+  FeatureCard as FeatureCardType,
+  MenuEntry,
+  MenuSection,
+} from "../NavigationMenu.types"
 
 export type MegaMenuPanelProps = {
   entry: MenuEntry
@@ -18,12 +23,33 @@ export function MegaMenuPanel({ entry }: MegaMenuPanelProps) {
 
 function TwoLevelPanel({ entry }: { entry: MenuEntry }) {
   const sections = entry.sections ?? []
-  const [primary, list] = pickSections(sections)
+  const primaries = sections.filter((s) => (s.variant ?? "primary") === "primary")
+  const list = sections.find((s) => s.variant === "list")
+  const hasEngagements = !!(entry.engagements || entry.engagementCards?.length)
+  // Single primary spans the first two grid columns; multiple primaries each
+  // take one column so the 4-col grid still aligns with list + aside.
+  const span = primaries.length <= 1
   return (
     <div className={styles.panel}>
-      {primary ? <MenuColumn section={primary} /> : null}
-      {list ? <MenuColumn section={list} /> : <div className={styles.panelColumn} />}
-      <AsidePanel entry={entry} />
+      {primaries.length > 0 ? (
+        primaries.map((section, i) => (
+          <MenuColumn
+            key={section.label + i}
+            section={section}
+            className={span ? styles.panelPrimarySpan : undefined}
+          />
+        ))
+      ) : (
+        <div className={clsx(styles.panelColumn, styles.panelPrimarySpan)} />
+      )}
+      {hasEngagements ? (
+        <EngagementsPanel entry={entry} />
+      ) : list ? (
+        <MenuColumn section={list} />
+      ) : (
+        <div className={styles.panelColumn} />
+      )}
+      <AsidePanel aside={entry.aside} featureCards={entry.featureCards} />
     </div>
   )
 }
@@ -33,28 +59,52 @@ function ThreeLevelPanel({ entry }: { entry: MenuEntry }) {
   const [active, setActive] = useState(tabs[0]?.label ?? "")
   const activeTab = tabs.find((t) => t.label === active) ?? tabs[0]
   const [primary, list] = pickSections(activeTab?.sections ?? [])
+  const tabAside = activeTab?.aside ?? entry.aside
+  const tabFeatureCards = activeTab?.featureCards ?? entry.featureCards
 
   return (
     <Tabs.Root
       value={active}
       onValueChange={setActive}
       orientation="vertical"
-      className={clsx(styles.panel, styles.panelWithRail)}
+      className={styles.panel}
     >
       <MenuTabRail tabs={tabs} value={active} onValueChange={setActive} />
-      {primary ? <MenuColumn section={primary} /> : null}
+      {primary ? <MenuColumn section={primary} /> : <div className={styles.panelColumn} />}
       {list ? <MenuColumn section={list} /> : <div className={styles.panelColumn} />}
-      <AsidePanel entry={entry} />
+      <AsidePanel aside={tabAside} featureCards={tabFeatureCards} />
     </Tabs.Root>
   )
 }
 
-function AsidePanel({ entry }: { entry: MenuEntry }) {
+function EngagementsPanel({ entry }: { entry: MenuEntry }) {
+  return (
+    <div className={`${styles.panelColumn} ${styles.panelColumnEngagements}`}>
+      {entry.engagementsLabel ? (
+        <h3 className={styles.columnTitle}>{entry.engagementsLabel}</h3>
+      ) : null}
+      <div className={styles.engagementsSlot}>
+        {entry.engagements ??
+          (entry.engagementCards ?? []).map((card) => (
+            <EngagementCard key={card.title} card={card} />
+          ))}
+      </div>
+    </div>
+  )
+}
+
+function AsidePanel({
+  aside,
+  featureCards,
+}: {
+  aside?: ReactNode
+  featureCards?: FeatureCardType[]
+}) {
   return (
     <div className={`${styles.panelColumn} ${styles.panelColumnAside}`}>
       <div className={styles.asideSlot}>
-        {entry.aside ??
-          (entry.featureCards ?? []).map((card) => (
+        {aside ??
+          (featureCards ?? []).map((card) => (
             <FeatureCard key={card.title} card={card} />
           ))}
       </div>

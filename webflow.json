@@ -2,7 +2,8 @@
   "library": {
     "name": "LCL Pro Code Components",
     "components": [
-      "./components/NavigationMenu/NavigationMenu.webflow.tsx"
+      "./components/NavigationMenu/NavigationMenu.webflow.tsx",
+      "./components/Form/Form.webflow.tsx"
     ],
     "description": "",
     "id": "lcl-pro-code-components"

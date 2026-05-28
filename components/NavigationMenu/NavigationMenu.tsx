@@ -1,3 +1,4 @@
+import type { ReactNode } from "react"
 import { NavigationMenuDesktop } from "./desktop/NavigationMenuDesktop"
 import { NavigationMenuMobile } from "./mobile/NavigationMenuMobile"
 import { useMediaQuery } from "./hooks/useMediaQuery"
@@ -12,7 +13,9 @@ export type NavigationMenuProps = {
   menu?: MenuTree
   topBarLinks?: TopBarLink[]
   /** Right-aside content per top-level entry (key = entry.label). */
-  asideSlots?: Record<string, React.ReactNode>
+  asideSlots?: Record<string, ReactNode>
+  /** Mid "Nos engagements" column content per top-level entry (key = entry.label). */
+  engagementsSlots?: Record<string, ReactNode>
 }
 
 export function NavigationMenu({
@@ -23,11 +26,19 @@ export function NavigationMenu({
   menu = defaultMenu,
   topBarLinks = defaultTopBarLinks,
   asideSlots,
+  engagementsSlots,
 }: NavigationMenuProps) {
-  const resolvedMenu: MenuTree = asideSlots
-    ? menu.map((entry) =>
-        asideSlots[entry.label] != null ? { ...entry, aside: asideSlots[entry.label] } : entry,
-      )
+  const resolvedMenu: MenuTree = (asideSlots || engagementsSlots)
+    ? menu.map((entry) => {
+        const aside = asideSlots?.[entry.label]
+        const engagements = engagementsSlots?.[entry.label]
+        if (aside == null && engagements == null) return entry
+        return {
+          ...entry,
+          ...(aside != null ? { aside } : {}),
+          ...(engagements != null ? { engagements } : {}),
+        }
+      })
     : menu
   const isMobile = useMediaQuery("(max-width: 1149.98px)", false)
   const isCompact = useMediaQuery("(max-width: 1279.98px)", false)

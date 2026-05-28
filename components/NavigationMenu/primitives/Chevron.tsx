@@ -1,24 +1,38 @@
-import type { SVGProps } from "react"
+import { ChevronRightIcon } from "./icons/ChevronRightIcon"
+import type { IconProps } from "./icons/Icon.types"
 
-export function Chevron({ direction = "right", ...props }: SVGProps<SVGSVGElement> & { direction?: "right" | "left" | "down" }) {
-  const rotation = direction === "left" ? 180 : direction === "down" ? 90 : 0
+export type ChevronProps = IconProps & {
+  direction?: "right" | "left" | "down" | "up"
+}
+
+const rotations: Record<NonNullable<ChevronProps["direction"]>, number> = {
+  right: 0,
+  down: 90,
+  left: 180,
+  up: 270,
+}
+
+export function Chevron({
+  direction = "right",
+  size = 24,
+  className,
+  title,
+}: ChevronProps) {
   return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden="true"
-      style={{ transform: `rotate(${rotation}deg)` }}
-      {...props}
+    <span
+      className={className}
+      aria-hidden={title ? undefined : true}
+      role={title ? "img" : undefined}
+      style={{
+        display: "inline-flex",
+        flexShrink: 0,
+        transform: `rotate(${rotations[direction]}deg)`,
+        transition: "transform 300ms ease",
+      }}
     >
-      <path
-        d="M6 3l5 5-5 5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
+      <ChevronRightIcon size={size} title={title} />
+    </span>
   )
 }
+
+export default Chevron

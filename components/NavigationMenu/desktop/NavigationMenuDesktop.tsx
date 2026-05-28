@@ -2,6 +2,7 @@ import * as NavMenu from "@radix-ui/react-navigation-menu"
 import styles from "../styles"
 import { MegaMenuPanel } from "./MegaMenuPanel"
 import { Logo } from "../primitives/Logo"
+import { ContactIcon, SearchIcon, UserIcon } from "../primitives/icons"
 import type { MenuTree, TopBarLink } from "../NavigationMenu.types"
 
 export type NavigationMenuDesktopProps = {
@@ -46,7 +47,7 @@ export function NavigationMenuDesktop({
             Découvrir LCL
           </a>
           <a className={`${styles.topBarLink} ${styles.topBarAccent}`} href="#">
-            <ChatBubbleIcon />
+            <ContactIcon />
             Nous contacter
           </a>
         </div>
@@ -112,7 +113,12 @@ export function NavigationMenuDesktop({
               <input type="search" placeholder="Rechercher" aria-label="Rechercher" />
             </label>
           ) : showSearch ? (
-            <button type="button" className={styles.iconButton} aria-label="Rechercher">
+            <button
+              type="button"
+              className={styles.iconButton}
+              data-variant="account"
+              aria-label="Rechercher"
+            >
               <SearchIcon />
             </button>
           ) : null}
@@ -121,7 +127,12 @@ export function NavigationMenuDesktop({
             {ctaLabel}
           </a>
 
-          <button type="button" className={styles.iconButton} aria-label="Espace client">
+          <button
+            type="button"
+            className={styles.iconButton}
+            data-variant="account"
+            aria-label="Espace client"
+          >
             <UserIcon />
           </button>
         </div>
@@ -131,37 +142,6 @@ export function NavigationMenuDesktop({
         </div>
       </NavMenu.Root>
     </nav>
-  )
-}
-
-function SearchIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
-      <path d="M11 11l3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  )
-}
-
-function UserIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
-      <circle cx="9" cy="6" r="3" stroke="currentColor" strokeWidth="1.5" />
-      <path
-        d="M2.5 15.5a6.5 6.5 0 0 1 13 0"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-      />
-    </svg>
-  )
-}
-
-function ChatBubbleIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-      <path d="M2 4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H7l-3 3v-3H4a2 2 0 0 1-2-2V4z" />
-    </svg>
   )
 }
 

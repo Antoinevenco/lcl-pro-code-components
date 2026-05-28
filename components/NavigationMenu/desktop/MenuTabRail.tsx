@@ -26,7 +26,7 @@ export function MenuTabRail({ tabs, value, onValueChange }: MenuTabRailProps) {
           onFocus={() => onValueChange(tab.label)}
         >
           <span>{tab.label}</span>
-          {value !== tab.label ? <Chevron /> : null}
+          <Chevron className={styles.tabChevron} />
         </Tabs.Trigger>
       ))}
     </Tabs.List>

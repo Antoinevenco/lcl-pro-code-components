@@ -1,0 +1,7 @@
+export { ChevronRightIcon } from "./ChevronRightIcon"
+export { CloseIcon } from "./CloseIcon"
+export { ContactIcon } from "./ContactIcon"
+export { MenuIcon } from "./MenuIcon"
+export { SearchIcon } from "./SearchIcon"
+export { UserIcon } from "./UserIcon"
+export type { IconProps } from "./Icon.types"

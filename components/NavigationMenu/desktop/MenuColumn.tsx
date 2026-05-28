@@ -6,15 +6,17 @@ import type { MenuSection } from "../NavigationMenu.types"
 export type MenuColumnProps = {
   section: MenuSection
   showTitle?: boolean
+  className?: string
 }
 
-export function MenuColumn({ section, showTitle = true }: MenuColumnProps) {
+export function MenuColumn({ section, showTitle = true, className }: MenuColumnProps) {
   const variant = section.variant ?? "primary"
   return (
     <div
       className={clsx(
         styles.panelColumn,
         variant === "primary" ? styles.panelColumnPrimary : styles.panelColumnList,
+        className,
       )}
     >
       {showTitle ? <h3 className={styles.columnTitle}>{section.label}</h3> : null}

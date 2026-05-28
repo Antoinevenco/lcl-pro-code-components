@@ -13,6 +13,7 @@ type WebflowProps = {
   asideSavoirFaire: ReactNode
   asidePourQui: ReactNode
   asidePourquoi: ReactNode
+  engagementsPourquoi: ReactNode
 }
 
 function NavigationMenuWebflow({
@@ -24,6 +25,7 @@ function NavigationMenuWebflow({
   asideSavoirFaire,
   asidePourQui,
   asidePourquoi,
+  engagementsPourquoi,
 }: WebflowProps) {
   return (
     <NavigationMenu
@@ -38,6 +40,9 @@ function NavigationMenuWebflow({
         "Nos savoir-faire": asideSavoirFaire,
         "Pour qui ?": asidePourQui,
         "Pourquoi LCL ?": asidePourquoi,
+      }}
+      engagementsSlots={{
+        "Pourquoi LCL ?": engagementsPourquoi,
       }}
     />
   )
@@ -62,6 +67,7 @@ export default declareComponent(NavigationMenuWebflow, {
     asideSavoirFaire: props.Slot({ name: "Cards · Nos savoir-faire" }),
     asidePourQui: props.Slot({ name: "Cards · Pour qui ?" }),
     asidePourquoi: props.Slot({ name: "Cards · Pourquoi LCL ?" }),
+    engagementsPourquoi: props.Slot({ name: "Engagements · Pourquoi LCL ?" }),
   },
   options: {
     ssr: false,

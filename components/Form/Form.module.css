@@ -1,0 +1,540 @@
+/* =========================================================================
+ * Form — token-driven styles
+ * Tokens come from /reference code/variables.css. The site bundles that file
+ * globally, so the variables resolve at runtime in Webflow. Sizes use rem;
+ * the only raw colors are the flagged TODO fallbacks below (no Webflow token
+ * exists for them yet) and 1px borders.
+ * ========================================================================= */
+
+/* Self-contained box model: published Webflow sites apply a global
+   border-box reset, but local/other hosts may not. Scope it to the component
+   so width:100% + padding never overflows the container. */
+.root,
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root {
+  font-family: var(--_typography---font--primary-family);
+  color: var(--_theme---text-1);
+  background: var(--_theme---background-2);
+  border-radius: var(--radius--medium);
+  padding: var(--_cards---card-padding);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--12);
+
+  /* TODO: add Webflow var --wf--functional-error (no error-text token exists;
+     functional-critical is a background tint only). */
+  --form-error: #e52615;
+  /* Control sizing — kept local so a future token swap is one line. */
+  --form-control-min-height: 3.5rem;
+  --form-textarea-min-height: 6rem;
+  /* Shared responsive column grid used by both field rows and radio groups,
+     so their columns line up exactly. auto-fit collapses to one column when a
+     column can no longer hold --form-col-min. */
+  --form-col-min: 20rem;
+  --form-col-gap: var(--_spacing---space--10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root *,
+  .root *::before,
+  .root *::after {
+    transition: none !important;
+  }
+}
+
+/* ── Eyebrow / section titles ──────────────────────────────────────────── */
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  /* TODO: design uses Montserrat; the site only ships Inter via this token. */
+  font-family: var(--_typography---font--primary-family);
+  font-weight: var(--_typography---font--primary-semibold);
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+  letter-spacing: 0.02em;
+}
+
+.section {
+  /* <fieldset> reset */
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--8);
+}
+
+.sectionTitle {
+  padding: 0;
+  /* Extra breathing room under the heading, on top of the section gap. */
+  margin: 0 0 var(--_spacing---space--8);
+  font-weight: var(--_typography---font--primary-bold);
+  font-size: var(--_typography---font-size--h2);
+  line-height: var(--_typography---line-height--medium);
+  color: var(--_theme---text-heading-1);
+}
+
+/* ── Field rows ────────────────────────────────────────────────────────── */
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--form-col-min), 100%), 1fr)
+  );
+  gap: var(--form-col-gap);
+  align-items: start;
+}
+
+/* Like .row, but uses auto-fill so a single child stays in column 1 and the
+   second track is reserved (empty) once the form is wide enough for 2 cols.
+   Used for fields that must occupy half the form on desktop — e.g. the radio
+   card groups (Civilité, Entreprise créée ?) which look stretched if they
+   span both tracks. Collapses to one track below --form-col-min, same as
+   .row. */
+.rowFirst {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fill,
+    minmax(min(var(--form-col-min), 100%), 1fr)
+  );
+  gap: var(--form-col-gap);
+  align-items: start;
+}
+
+.rowFull {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--5);
+  min-width: 0;
+}
+
+.label {
+  font-weight: var(--_typography---font--primary-medium);
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-1);
+}
+
+.label[data-error="true"] {
+  color: var(--form-error);
+}
+
+.errorMessage {
+  margin: 0;
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--form-error);
+}
+
+/* ── Text input ────────────────────────────────────────────────────────── */
+
+.input {
+  width: 100%;
+  min-height: var(--form-control-min-height);
+  padding-inline: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--2);
+  background: var(--_swatch---swatch--brand-white);
+  color: var(--_theme---text-1);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-small);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.input::placeholder {
+  color: var(--_theme---text-2);
+}
+
+.input:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.input:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.input[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+/* ── Select (Radix) ────────────────────────────────────────────────────── */
+
+.select {
+  width: 100%;
+  min-height: var(--form-control-min-height);
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_spacing---space--4);
+  padding-inline: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--2);
+  background: var(--_swatch---swatch--brand-white);
+  color: var(--_theme---text-1);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-small);
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.select:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.select:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.select[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+/* Placeholder state — Radix sets data-placeholder on the trigger. */
+.select[data-placeholder] {
+  color: var(--_theme---text-2);
+}
+
+.selectIcon {
+  display: inline-flex;
+  color: var(--_theme---text-1);
+}
+
+.selectContent {
+  z-index: 60;
+  min-width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  box-shadow: 0 0.5rem 1.5rem var(--_swatch---swatch--brand-blue-900-o20);
+  overflow: hidden;
+}
+
+.selectViewport {
+  padding: var(--_spacing---space--3);
+}
+
+.selectItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_spacing---space--4);
+  padding-inline: var(--_spacing---space--5);
+  padding-block: var(--_spacing---space--4);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-1);
+  cursor: pointer;
+  user-select: none;
+  outline: none;
+}
+
+/* `[data-highlighted]` is what Radix sets for the keyboard-focused item.
+   `:hover` is the mouse path — kept as a parallel rule because in Webflow's
+   Shadow DOM context Radix's pointer-move handler doesn't reliably mirror
+   hover into `data-highlighted`, so without this the row stays inert on
+   mouseover. Same visual for both states. */
+.selectItem:hover,
+.selectItem[data-highlighted] {
+  background: var(--_theme---background-2);
+}
+
+.selectItem[data-state="checked"] {
+  color: var(--_swatch---swatch--brand-blue-600);
+  font-weight: var(--_typography---font--primary-medium);
+}
+
+.selectItemIndicator {
+  display: inline-flex;
+  color: var(--_swatch---swatch--brand-blue-600);
+}
+
+/* ── Radio cards (Radix RadioGroup) ────────────────────────────────────── */
+
+.radioGroup {
+  /* Flex-wrap (not auto-fit grid) so two cards share one row when they fit and
+     stack vertically — at full card width — as soon as the container narrows.
+     Each card has flex-basis 0 to share remaining space equally, and a small
+     min-width so the wrap kicks in before labels get crushed. */
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--_spacing---space--6);
+  width: 100%;
+}
+
+.radioGroup > .radioCard {
+  flex: 1 1 0;
+  min-width: 8rem;
+}
+
+.radioCard {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--_spacing---space--5);
+  padding: var(--_spacing---space--6);
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.radioCard:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.radioCard:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.radioCard[data-state="checked"] {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.radioCard[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+.radioCircle {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--radius--round, 100vw);
+}
+
+.radioCard[data-state="checked"] .radioCircle {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.radioDot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: var(--radius--round, 100vw);
+  background: var(--_swatch---swatch--brand-blue-600);
+}
+
+.radioLabel {
+  font-size: var(--_typography---font-size--text-small);
+  font-weight: var(--_typography---font--primary-medium);
+  color: var(--_theme---text-1);
+}
+
+/* ── Textarea + counter ────────────────────────────────────────────────── */
+
+.textareaGroup {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.textareaGroup:focus-within {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.textareaGroup[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+.textarea {
+  width: 100%;
+  min-height: var(--form-textarea-min-height);
+  resize: vertical;
+  border: 0;
+  background: transparent;
+  color: var(--_theme---text-1);
+  padding: var(--_spacing---space--5);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-small);
+  line-height: var(--_typography---line-height--large);
+}
+
+.textarea::placeholder {
+  color: var(--_theme---text-2);
+}
+
+.textarea:focus-visible {
+  outline: none;
+}
+
+.textareaFooter {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-inline: var(--_spacing---space--5);
+  padding-bottom: var(--_spacing---space--5);
+  padding-top: var(--_spacing---space--3);
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+}
+
+/* ── Consent checkbox (Radix Checkbox) ─────────────────────────────────── */
+
+.consent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--4);
+}
+
+.consentRow {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--_spacing---space--5);
+}
+
+.checkbox {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-3x-small);
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.checkbox:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkbox:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.checkbox[data-state="checked"] {
+  background: var(--_swatch---swatch--brand-blue-600);
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkbox[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+.checkboxIndicator {
+  display: inline-flex;
+  color: var(--_swatch---swatch--brand-white);
+}
+
+.consentLabel {
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-1);
+  line-height: var(--_typography---line-height--large);
+  cursor: pointer;
+}
+
+/* ── Actions / submit ──────────────────────────────────────────────────── */
+
+.requiredNote {
+  margin: 0;
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+}
+
+.recaptchaNote {
+  margin: 0;
+  text-align: center;
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: var(--_spacing---space--10);
+  padding-block: var(--_spacing---space--5);
+  background: var(--_theme---button-primary--background);
+  color: var(--_theme---button-primary--text);
+  border: 1px solid var(--_theme---button-primary--border);
+  border-radius: var(--_sizes---🟢-radius--border-radius-rounded);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-main);
+  font-weight: var(--_typography---font--primary-semibold);
+  cursor: pointer;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.submit:hover {
+  background: var(--_theme---button-primary--background-hover);
+  border-color: var(--_theme---button-primary--border-hover);
+  color: var(--_theme---button-primary--text-hover);
+}
+
+.submit:focus-visible {
+  outline: var(--focus--width, 0.125rem) solid
+    var(--_swatch---swatch--brand-blue-600);
+  outline-offset: var(--focus--offset-outer, 0.1875rem);
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Submission status ─────────────────────────────────────────────────── */
+
+.status:empty {
+  display: none;
+}
+
+.statusSuccess,
+.statusError {
+  margin: 0;
+  text-align: center;
+  font-size: var(--_typography---font-size--text-small);
+}
+
+.statusSuccess {
+  color: var(--_swatch---swatch--brand-blue-900);
+}
+
+.statusError {
+  color: var(--form-error);
+}

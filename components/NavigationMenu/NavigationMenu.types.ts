@@ -17,6 +17,10 @@ export type MenuSection = {
 export type MenuTab = {
   label: string
   sections: MenuSection[]
+  /** Designer-provided slot for the right-aside column when this tab is active. */
+  aside?: import("react").ReactNode
+  /** Fallback aside content used when no `aside` slot is supplied. */
+  featureCards?: FeatureCard[]
 }
 
 export type FeatureCard = {
@@ -28,6 +32,12 @@ export type FeatureCard = {
   iconBg?: "yellow" | "white"
 }
 
+export type EngagementCard = {
+  title: string
+  ctaLabel: string
+  ctaHref: string
+}
+
 export type MenuEntry = {
   label: string
   href?: string
@@ -37,6 +47,12 @@ export type MenuEntry = {
   aside?: import("react").ReactNode
   /** Fallback aside content used when no `aside` slot is supplied (e.g. previews). */
   featureCards?: FeatureCard[]
+  /** Designer-provided slot for the mid "Nos engagements" column. */
+  engagements?: import("react").ReactNode
+  /** Heading rendered above the engagements column when present. */
+  engagementsLabel?: string
+  /** Fallback engagements content used when no `engagements` slot is supplied. */
+  engagementCards?: EngagementCard[]
   ctaLabel?: string
   ctaHref?: string
 }

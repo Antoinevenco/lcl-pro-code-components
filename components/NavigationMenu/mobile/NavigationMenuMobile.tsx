@@ -1,9 +1,14 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { useEffect, useState } from "react"
-import type { MenuTree, TopBarLink } from "../NavigationMenu.types"
+import type {
+  EspaceClientConfig,
+  MenuTree,
+  TopBarLink,
+} from "../NavigationMenu.types"
 import { useMenuStack } from "../hooks/useMenuStack"
 import { Logo } from "../primitives/Logo"
-import { CloseIcon, ContactIcon, MenuIcon, UserIcon } from "../primitives/icons"
+import { CloseIcon, ContactIcon, MenuIcon } from "../primitives/icons"
+import { EspaceClientModal } from "../primitives/EspaceClientModal"
 import styles from "../styles"
 import { MenuStackScreen } from "./MenuStackScreen"
 
@@ -13,6 +18,7 @@ export type NavigationMenuMobileProps = {
   ctaLabel: string
   ctaHref: string
   logoHref: string
+  espace: EspaceClientConfig
   triggerLabel?: string
 }
 
@@ -22,6 +28,7 @@ export function NavigationMenuMobile({
   ctaLabel,
   ctaHref,
   logoHref,
+  espace,
   triggerLabel = "Menu",
 }: NavigationMenuMobileProps) {
   const [open, setOpen] = useState(false)
@@ -65,13 +72,7 @@ export function NavigationMenuMobile({
             <Logo />
           </a>
 
-          <button
-            type="button"
-            className={styles.mobileIconButton}
-            aria-label="Espace client"
-          >
-            <UserIcon />
-          </button>
+          <EspaceClientModal variant="mobile" config={espace} />
         </div>
       </nav>
 

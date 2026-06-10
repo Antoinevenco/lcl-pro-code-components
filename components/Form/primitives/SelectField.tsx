@@ -25,6 +25,19 @@ export type SelectFieldProps = {
    * styles apply. The form root is a safe target: no overflow:hidden.
    */
   portalContainer?: HTMLElement | null
+  /**
+   * Optional class overrides for the trigger, icon wrapper, and content
+   * surface. When provided, these REPLACE the default Form-bound classes —
+   * the consumer takes full ownership of that element's look. Used by
+   * `OfferFilter`, which composes this dropdown but paints the trigger to
+   * match its card-selection design. Backward-compatible: omit to keep the
+   * Form styling.
+   */
+  triggerClassName?: string
+  iconClassName?: string
+  contentClassName?: string
+  /** Aria-label fallback when no visible <label> is wired via `id`. */
+  ariaLabel?: string
 }
 
 /**
@@ -42,25 +55,30 @@ export function SelectField({
   invalid,
   describedBy,
   portalContainer,
+  triggerClassName,
+  iconClassName,
+  contentClassName,
+  ariaLabel,
 }: SelectFieldProps) {
   return (
     <RadixSelect.Root value={value || undefined} onValueChange={onValueChange}>
       <RadixSelect.Trigger
         id={id}
-        className={styles.select}
+        className={triggerClassName ?? styles.select}
         data-invalid={invalid ? "true" : undefined}
         aria-invalid={invalid || undefined}
         aria-describedby={describedBy}
+        aria-label={ariaLabel}
         onBlur={onBlur}
       >
         <RadixSelect.Value placeholder={placeholder} />
-        <RadixSelect.Icon className={styles.selectIcon}>
+        <RadixSelect.Icon className={iconClassName ?? styles.selectIcon}>
           <ChevronDownIcon size={16} />
         </RadixSelect.Icon>
       </RadixSelect.Trigger>
       <RadixSelect.Portal container={portalContainer ?? undefined}>
         <RadixSelect.Content
-          className={styles.selectContent}
+          className={contentClassName ?? styles.selectContent}
           position="popper"
           sideOffset={4}
         >

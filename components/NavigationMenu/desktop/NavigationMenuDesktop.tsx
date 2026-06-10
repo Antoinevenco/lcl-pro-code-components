@@ -2,8 +2,13 @@ import * as NavMenu from "@radix-ui/react-navigation-menu"
 import styles from "../styles"
 import { MegaMenuPanel } from "./MegaMenuPanel"
 import { Logo } from "../primitives/Logo"
-import { ContactIcon, SearchIcon, UserIcon } from "../primitives/icons"
-import type { MenuTree, TopBarLink } from "../NavigationMenu.types"
+import { ContactIcon, SearchIcon } from "../primitives/icons"
+import { EspaceClientModal } from "../primitives/EspaceClientModal"
+import type {
+  EspaceClientConfig,
+  MenuTree,
+  TopBarLink,
+} from "../NavigationMenu.types"
 
 export type NavigationMenuDesktopProps = {
   menu: MenuTree
@@ -13,6 +18,7 @@ export type NavigationMenuDesktopProps = {
   showSearch: boolean
   variant: "wide" | "compact"
   logoHref: string
+  espace: EspaceClientConfig
   onMenuOpenChange?: (entryLabel: string | null) => void
 }
 
@@ -24,6 +30,7 @@ export function NavigationMenuDesktop({
   showSearch,
   variant,
   logoHref,
+  espace,
   onMenuOpenChange,
 }: NavigationMenuDesktopProps) {
   return (
@@ -110,7 +117,11 @@ export function NavigationMenuDesktop({
           {showSearch && variant === "wide" ? (
             <label className={styles.search}>
               <SearchIcon />
-              <input type="search" placeholder="Rechercher" aria-label="Rechercher" />
+              <input
+                type="search"
+                placeholder="Rechercher"
+                aria-label="Rechercher"
+              />
             </label>
           ) : showSearch ? (
             <button
@@ -127,14 +138,7 @@ export function NavigationMenuDesktop({
             {ctaLabel}
           </a>
 
-          <button
-            type="button"
-            className={styles.iconButton}
-            data-variant="account"
-            aria-label="Espace client"
-          >
-            <UserIcon />
-          </button>
+          <EspaceClientModal variant="desktop" config={espace} />
         </div>
 
         <div className={styles.viewportWrap}>

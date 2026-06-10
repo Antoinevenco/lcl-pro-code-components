@@ -2,7 +2,11 @@ import { declareComponent } from "@webflow/react"
 import { props } from "@webflow/data-types"
 import type { ReactNode } from "react"
 import NavigationMenu from "./NavigationMenu"
-import { defaultMenu, topBarLinks as defaultTopBarLinks } from "./data/menu"
+import {
+  defaultEspaceClient,
+  defaultMenu,
+  topBarLinks as defaultTopBarLinks,
+} from "./data/menu"
 
 type WebflowProps = {
   logoHref: { href: string; target?: string }
@@ -14,6 +18,12 @@ type WebflowProps = {
   asidePourQui: ReactNode
   asidePourquoi: ReactNode
   engagementsPourquoi: ReactNode
+  espaceTitle: string
+  espaceHeading: string
+  espaceProLabel: string
+  espaceProHref: { href: string; target?: string }
+  espaceComptesLabel: string
+  espaceComptesHref: { href: string; target?: string }
 }
 
 function NavigationMenuWebflow({
@@ -26,6 +36,12 @@ function NavigationMenuWebflow({
   asidePourQui,
   asidePourquoi,
   engagementsPourquoi,
+  espaceTitle,
+  espaceHeading,
+  espaceProLabel,
+  espaceProHref,
+  espaceComptesLabel,
+  espaceComptesHref,
 }: WebflowProps) {
   return (
     <NavigationMenu
@@ -35,6 +51,14 @@ function NavigationMenuWebflow({
       showSearch={showSearch}
       menu={defaultMenu}
       topBarLinks={defaultTopBarLinks}
+      espace={{
+        title: espaceTitle,
+        heading: espaceHeading,
+        proLabel: espaceProLabel,
+        proHref: espaceProHref?.href ?? "#",
+        comptesLabel: espaceComptesLabel,
+        comptesHref: espaceComptesHref?.href ?? "#",
+      }}
       asideSlots={{
         "Comptes et Opérations": asideComptes,
         "Nos savoir-faire": asideSavoirFaire,
@@ -68,6 +92,24 @@ export default declareComponent(NavigationMenuWebflow, {
     asidePourQui: props.Slot({ name: "Cards · Pour qui ?" }),
     asidePourquoi: props.Slot({ name: "Cards · Pourquoi LCL ?" }),
     engagementsPourquoi: props.Slot({ name: "Engagements · Pourquoi LCL ?" }),
+    espaceTitle: props.Text({
+      name: "Espace · header title",
+      defaultValue: defaultEspaceClient.title,
+    }),
+    espaceHeading: props.Text({
+      name: "Espace · heading",
+      defaultValue: defaultEspaceClient.heading,
+    }),
+    espaceProLabel: props.Text({
+      name: "Espace · Pro label",
+      defaultValue: defaultEspaceClient.proLabel,
+    }),
+    espaceProHref: props.Link({ name: "Espace · Pro link" }),
+    espaceComptesLabel: props.Text({
+      name: "Espace · Comptes label",
+      defaultValue: defaultEspaceClient.comptesLabel,
+    }),
+    espaceComptesHref: props.Link({ name: "Espace · Comptes link" }),
   },
   options: {
     ssr: false,

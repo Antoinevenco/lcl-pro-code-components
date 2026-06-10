@@ -1,5 +1,6 @@
 import type {
   EngagementCard,
+  EspaceClientConfig,
   FeatureCard,
   MenuTree,
   TopBarLink,
@@ -11,6 +12,15 @@ export const topBarLinks: TopBarLink[] = [
   { label: "Professionnels", href: "/", current: true },
   { label: "Entreprises", href: "https://www.lcl.fr/entreprise" },
 ]
+
+export const defaultEspaceClient: EspaceClientConfig = {
+  title: "Espace client en ligne",
+  heading: "Choisir mon espace dédié",
+  proLabel: "Accéder à LCL Espace Pro",
+  proHref: "#",
+  comptesLabel: "Accéder à mes comptes",
+  comptesHref: "#",
+}
 
 const comptesCards: FeatureCard[] = [
   {
@@ -108,28 +118,31 @@ export const defaultMenu: MenuTree = [
         items: [
           {
             label: "Choisir votre façon d'ouvrir un compte pro",
-            href: "#",
+            href: "/compte-bancaire-professionnel",
             description: "En agence ou 100% en ligne avec L by LCL",
           },
           {
             label: "Trouver la carte bancaire Pro qui vous correspond",
-            href: "#",
+            href: "/cartes-bancaires-professionnelles-et-services",
             description: "Cartes Visa Business, Gold ou Excellence",
           },
           {
             label: "Encaisser en magasin, en mobilité ou à distance",
-            href: "#",
-            description: "TPE, Tap to Pay … des solutions adaptées à votre activité",
+            href: "/solutions-encaissement-magasin-distance",
+            description:
+              "TPE, Tap to Pay … des solutions adaptées à votre activité",
           },
           {
             label: "Simplifier votre gestion administrative et comptable",
-            href: "#",
-            description: "Gérer devis, factures et trésorerie en toute simplicité avec Kolecto",
+            href: "/banque-a-distance-professionnelle",
+            description:
+              "Gérer devis, factures et trésorerie en toute simplicité avec Kolecto",
           },
           {
             label: "Créer votre entreprise",
-            href: "#",
-            description: "Accompagnement complet avec notre partenaire LegalPlace",
+            href: "/createur-entreprise",
+            description:
+              "Accompagnement complet avec notre partenaire LegalPlace",
           },
         ],
       },
@@ -139,8 +152,10 @@ export const defaultMenu: MenuTree = [
         items: [
           { label: "Comparateur de compte professionnel", href: "#" },
           { label: "Comparateur de carte", href: "#" },
-          { label: "Simulateur de statut juridique", href: "#" },
-          { label: "Construire mon Business Plan", href: "#" },
+          {
+            label: "Simulateur de statut juridique",
+            href: "https://www.entrepreneur.lcl.fr/",
+          },
         ],
       },
     ],
@@ -162,18 +177,18 @@ export const defaultMenu: MenuTree = [
             items: [
               {
                 label: "Se financer",
-                href: "#",
+                href: "/se-financer",
                 description:
                   "Crédits professionnels, Facilité de caisses, affacturage, leasing, financement de fonds de commerce et locaux …",
               },
               {
                 label: "Épargner et Placer",
-                href: "#",
+                href: "/epargner-placer",
                 description: "Optimiser sa trésorerie, préparer sa retraite",
               },
               {
                 label: "S'assurer",
-                href: "#",
+                href: "/assurer",
                 description:
                   "Responsabilité Civile Pro, Multirisque Pro, Prévoyance, Assurance Cyber …",
               },
@@ -201,21 +216,27 @@ export const defaultMenu: MenuTree = [
             items: [
               {
                 label: "Fidéliser ses salariés",
-                href: "#",
+                href: "/fideliser-salaries",
                 description:
                   "Épargne salariale, intéressement et participation, assurance collective …",
               },
               {
                 label: "Libérer votre esprit d'entreprendre",
-                href: "#",
+                href: "/care-entrepreneurs",
                 description:
                   "Care entrepreneur, un programme innovant permettant d'alléger la charge mentale des entrepreneurs",
               },
               {
                 label: "Accompagner vos transitions",
-                href: "#",
+                href: "/accompagner-vos-transitions-pro",
                 description:
                   "Transition écologique, mobilité douce, accompagnement à la reprise/cession d'entreprise via e-RIS, etc.",
+              },
+              {
+                label: "Bénéficier de notre écosystème partenaire",
+                href: "/nos-partenaires-pro",
+                description:
+                  "Découvrez nos partenaires et leurs solutions innovantes.",
               },
             ],
           },
@@ -247,22 +268,28 @@ export const defaultMenu: MenuTree = [
         label: "Profil",
         variant: "primary",
         items: [
-          { label: "Créateur / indépendant", href: "#" },
-          { label: "TPE", href: "#" },
-          { label: "PME / ETI", href: "#" },
-          { label: "Start-up", href: "#" },
-          { label: "Associations et fondations", href: "#" },
+          { label: "Créateur / indépendant", href: "/createur-independant" },
+          { label: "TPE / PME", href: "/tpe-pme" },
+          { label: "SCI / LMNP", href: "/sci-lmnp" },
+          { label: "Start-up", href: "/startups" },
+          {
+            label: "Associations et fondations",
+            href: "/associations-et-fondations",
+          },
         ],
       },
       {
         label: "Métiers",
         variant: "primary",
         items: [
-          { label: "Santé", href: "#" },
-          { label: "Droit, chiffre et conseil", href: "#" },
-          { label: "Artisans et commerçants", href: "#" },
+          { label: "Santé", href: "/professions-liberales-sante" },
+          {
+            label: "Droit, chiffre et conseil",
+            href: "/professions-liberales-chiffre-droit-justice",
+          },
+          { label: "Artisans et commerçants", href: "/artisans-commercants" },
           { label: "Services", href: "#" },
-          { label: "Franchise", href: "#" },
+          { label: "Franchise", href: "/franchises" },
         ],
       },
       {
@@ -275,45 +302,45 @@ export const defaultMenu: MenuTree = [
       },
     ],
   },
-  {
-    label: "Pourquoi LCL ?",
-    ctaLabel: "Tout savoir sur LCL",
-    ctaHref: "#",
-    sections: [
-      {
-        label: "LCL, Pour aller de l'avant.",
-        variant: "primary",
-        ctaLabel: "Tout savoir sur LCL",
-        ctaHref: "#",
-        items: [
-          {
-            label: "Une histoire de confiance",
-            href: "#",
-            description: "En agence ou 100% en ligne avec L by LCL",
-          },
-          {
-            label: "L'Energie d'entreprendre",
-            href: "#",
-            description:
-              "Innover et co-construire des offres qui résonnent sur le marché",
-          },
-          {
-            label: "Une banque omnicanale",
-            href: "#",
-            description:
-              "Une banque présente au plus proche des clients de leurs projets",
-          },
-          {
-            label: "Une proximité relationnelle",
-            href: "#",
-            description:
-              "Des espaces dédiés aux professionnels dans nos 1 600 agences, un service client humain élu Service Client de l'Année 2026",
-          },
-        ],
-      },
-    ],
-    engagementsLabel: "Nos engagements",
-    engagementCards: pourquoiEngagementCards,
-    featureCards: pourquoiFeatureCards,
-  },
+  // {
+  //   label: "Pourquoi LCL ?",
+  //   ctaLabel: "Tout savoir sur LCL",
+  //   ctaHref: "#",
+  //   sections: [
+  //     {
+  //       label: "LCL, Pour aller de l'avant.",
+  //       variant: "primary",
+  //       ctaLabel: "Tout savoir sur LCL",
+  //       ctaHref: "#",
+  //       items: [
+  //         {
+  //           label: "Une histoire de confiance",
+  //           href: "#",
+  //           description: "En agence ou 100% en ligne avec L by LCL",
+  //         },
+  //         {
+  //           label: "L'Energie d'entreprendre",
+  //           href: "#",
+  //           description:
+  //             "Innover et co-construire des offres qui résonnent sur le marché",
+  //         },
+  //         {
+  //           label: "Une banque omnicanale",
+  //           href: "#",
+  //           description:
+  //             "Une banque présente au plus proche des clients de leurs projets",
+  //         },
+  //         {
+  //           label: "Une proximité relationnelle",
+  //           href: "#",
+  //           description:
+  //             "Des espaces dédiés aux professionnels dans nos 1 600 agences, un service client humain élu Service Client de l'Année 2026",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  //   engagementsLabel: "Nos engagements",
+  //   engagementCards: pourquoiEngagementCards,
+  //   featureCards: pourquoiFeatureCards,
+  // },
 ]

@@ -1,0 +1,175 @@
+/* =========================================================================
+ * OfferFilter — token-driven styles
+ *
+ * Visual reference: Figma node 2811-23130 ("Card") in -SiteLCLPro--Maquettes.
+ * The component renders a card whose centerpiece is the *existing* SelectField
+ * dropdown (from /components/Form/primitives), repainted to match the
+ * card-selection design — bold, centered title, no visible border at rest, and
+ * a circular chevron button.
+ *
+ * Tokens come from /reference code/variables.css, bundled globally by the
+ * Webflow site. Stacked-class selectors (`.trigger.trigger`) are used to win
+ * over Form's `.select` rules without resorting to `!important`, since both
+ * stylesheets co-exist in the same Shadow DOM once SelectField is imported.
+ * ========================================================================= */
+
+.root,
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: var(--_spacing---space--8);
+  padding: var(--_cards---card-padding);
+  background: var(--_theme---background-2);
+  color: var(--_theme---text-1);
+  border-radius: var(--radius--medium);
+  font-family: var(--_typography---font--primary-family);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root *,
+  .root *::before,
+  .root *::after {
+    transition: none !important;
+  }
+}
+
+/* ── Card visual (optional) ─────────────────────────────────────────────── */
+
+.media {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+}
+
+/* ── Dropdown trigger overrides ─────────────────────────────────────────── */
+/* These REPLACE Form's `.select` look — see SelectField triggerClassName.
+   Stacked class keeps state rules (`:hover`, `:focus-visible`) winning. */
+
+.trigger.trigger {
+  width: 100%;
+  min-height: 2.625rem; /* Figma: 42px */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_spacing---space--3);
+  padding-inline: var(--_spacing---space--5);
+  padding-block: 0;
+  background: transparent;
+  color: var(--_theme---text-1);
+  /* Border transparent at rest — reads as borderless until hover/focus. */
+  border: 1px solid transparent;
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--h3); /* ~20px */
+  font-weight: var(--_typography---font--primary-bold);
+  line-height: var(--_typography---line-height--medium);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.trigger.trigger:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.trigger.trigger:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.trigger.trigger[data-placeholder] {
+  color: var(--_theme---text-2);
+}
+
+/* Radix renders the selected value in a child span; let it ellipsize when
+   long offer titles run out of room. */
+.trigger.trigger > [data-radix-select-value] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Trailing chevron, painted as a 34px circular icon-button. */
+.icon.icon {
+  flex-shrink: 0;
+  width: 2.125rem; /* Figma: 34px */
+  height: 2.125rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--_swatch---swatch--brand-white);
+  border-radius: var(--_sizes---🟢-radius--border-radius-3x-large);
+  color: var(--_theme---text-1);
+  transition: background 200ms ease;
+}
+
+/* Bump the chevron from the SelectField's default 16px to the 24px the
+   Figma calls for. SVG width/height attributes can be overridden by CSS. */
+.icon.icon svg {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.trigger.trigger[data-state="open"] .icon.icon {
+  background: var(--_swatch---swatch--brand-blue-100);
+}
+
+/* ── Dropdown content surface ───────────────────────────────────────────── */
+
+.content {
+  z-index: 60;
+  min-width: var(--radix-select-trigger-width);
+  max-height: var(--radix-select-content-available-height);
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  box-shadow: 0 0.5rem 1.5rem var(--_swatch---swatch--brand-blue-900-o20);
+  overflow: hidden;
+}
+
+/* ── Primary CTA ────────────────────────────────────────────────────────── */
+
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 2.5rem; /* Figma: 40px */
+  padding-inline: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--3);
+  background: var(--_theme---button-primary--background);
+  color: var(--_theme---button-primary--text);
+  border: 1px solid var(--_theme---button-primary--border);
+  border-radius: var(--_sizes---🟢-radius--border-radius-rounded);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-main);
+  font-weight: var(--_typography---font--primary-semibold);
+  line-height: var(--_typography---line-height--large);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 300ms ease, color 300ms ease;
+}
+
+.cta:hover {
+  background: var(--_theme---button-primary--background-hover);
+  border-color: var(--_theme---button-primary--border-hover);
+  color: var(--_theme---button-primary--text-hover);
+}
+
+.cta:focus-visible {
+  outline: var(--focus--width, 0.125rem) solid
+    var(--_swatch---swatch--brand-blue-600);
+  outline-offset: var(--focus--offset-outer, 0.1875rem);
+}

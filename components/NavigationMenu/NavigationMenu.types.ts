@@ -64,3 +64,15 @@ export type TopBarLink = {
   href: string
   current?: boolean
 }
+
+/** Content of the "Espace client en ligne" modal/drawer opened from the user icon. */
+export type EspaceClientConfig = {
+  /** Title shown in the coloured header bar. */
+  title: string
+  /** Heading shown above the action buttons. */
+  heading: string
+  proLabel: string
+  proHref: string
+  comptesLabel: string
+  comptesHref: string
+}

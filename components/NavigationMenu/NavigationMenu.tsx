@@ -2,8 +2,16 @@ import type { ReactNode } from "react"
 import { NavigationMenuDesktop } from "./desktop/NavigationMenuDesktop"
 import { NavigationMenuMobile } from "./mobile/NavigationMenuMobile"
 import { useMediaQuery } from "./hooks/useMediaQuery"
-import { defaultMenu, topBarLinks as defaultTopBarLinks } from "./data/menu"
-import type { MenuTree, TopBarLink } from "./NavigationMenu.types"
+import {
+  defaultEspaceClient,
+  defaultMenu,
+  topBarLinks as defaultTopBarLinks,
+} from "./data/menu"
+import type {
+  EspaceClientConfig,
+  MenuTree,
+  TopBarLink,
+} from "./NavigationMenu.types"
 
 export type NavigationMenuProps = {
   logoHref?: string
@@ -16,6 +24,8 @@ export type NavigationMenuProps = {
   asideSlots?: Record<string, ReactNode>
   /** Mid "Nos engagements" column content per top-level entry (key = entry.label). */
   engagementsSlots?: Record<string, ReactNode>
+  /** "Espace client" modal/drawer content. Falls back to the LCL Pro defaults. */
+  espace?: Partial<EspaceClientConfig>
 }
 
 export function NavigationMenu({
@@ -27,7 +37,9 @@ export function NavigationMenu({
   topBarLinks = defaultTopBarLinks,
   asideSlots,
   engagementsSlots,
+  espace,
 }: NavigationMenuProps) {
+  const espaceConfig: EspaceClientConfig = { ...defaultEspaceClient, ...espace }
   const resolvedMenu: MenuTree = (asideSlots || engagementsSlots)
     ? menu.map((entry) => {
         const aside = asideSlots?.[entry.label]
@@ -53,6 +65,7 @@ export function NavigationMenu({
         ctaLabel={ctaLabel}
         ctaHref={ctaHref}
         logoHref={logoHref}
+        espace={espaceConfig}
       />
     )
   }
@@ -66,6 +79,7 @@ export function NavigationMenu({
       showSearch={showSearch}
       variant={layout === "compact" ? "compact" : "wide"}
       logoHref={logoHref}
+      espace={espaceConfig}
     />
   )
 }

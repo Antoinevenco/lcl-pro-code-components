@@ -837,6 +837,231 @@
   border: 0;
 }
 
+/* =========================================================================
+ * Espace client modal / drawer
+ * Opened from the "Espace client" user icon. Desktop = centered modal,
+ * mobile = full-width drawer sliding up from the bottom. Portaled into a
+ * display:contents anchor that lives inside .root so the Shadow-DOM-scoped
+ * styles (and the global token sheet) still resolve.
+ * ========================================================================= */
+.espaceOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgb(15 21 47 / 0.45);
+  z-index: 1000;
+}
+
+.espaceContent {
+  position: fixed;
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden auto;
+  background: var(--_swatch---swatch--brand-white);
+  color: var(--_swatch---swatch--brand-text);
+  font-family: var(--_typography---font--primary-family);
+  box-shadow: 0 0.75rem 2.5rem rgb(15 21 47 / 0.24);
+}
+.espaceContent:focus {
+  outline: none;
+}
+
+/* Desktop — centered modal */
+.espaceContent[data-variant="desktop"] {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: min(92vw, 32rem);
+  max-height: min(90vh, 44rem);
+  border-radius: var(--_sizes---🟢-radius--border-radius-small);
+}
+
+/* Mobile — full-width bottom drawer */
+.espaceContent[data-variant="mobile"] {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  max-height: 92vh;
+  border-radius: var(--_sizes---🟢-radius--border-radius-small)
+    var(--_sizes---🟢-radius--border-radius-small) 0 0;
+}
+
+.espaceHeader {
+  position: relative;
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--_spacing---space--5);
+  padding: var(--_spacing---space--10) var(--_spacing---space--10)
+    var(--_spacing---space--12);
+  background: var(--_theme---background-accent);
+  border-bottom: var(--border-width--main) solid var(--_theme---border-2);
+  /* Pull the white body up so its rounded top corners curve over the header. */
+  margin-bottom: calc(var(--_sizes---🟢-radius--border-radius-small) * -1);
+}
+.espaceHeaderTitle {
+  margin: 0;
+  flex: 1 0 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--_swatch---swatch--brand-white);
+  font-size: var(--_typography---font-size--h5);
+  font-weight: var(--_typography---font--primary-bold);
+  line-height: var(--_typography---line-height--small);
+}
+.espaceClose {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: var(--_spacing---space--2);
+  margin: calc(var(--_spacing---space--2) * -1);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius--round);
+  color: var(--_swatch---swatch--brand-white);
+  cursor: pointer;
+}
+.espaceClose:hover {
+  opacity: 0.8;
+}
+.espaceClose:focus-visible {
+  outline: var(--focus--width) solid var(--_swatch---swatch--brand-white);
+  outline-offset: var(--focus--offset-outer);
+}
+
+.espaceBody {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--10);
+  padding: var(--_spacing---space--10) var(--_spacing---space--10)
+    var(--_spacing---space--8);
+  background: var(--_swatch---swatch--brand-white);
+  border-radius: var(--_sizes---🟢-radius--border-radius-small)
+    var(--_sizes---🟢-radius--border-radius-small) 0 0;
+}
+.espaceIntro {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--_spacing---space--8);
+}
+.espaceIllustration {
+  /* Illustration is a fixed 100px mark in Figma — no spacing token applies. */
+  inline-size: 6.25rem;
+  block-size: 6.25rem;
+  flex-shrink: 0;
+}
+.espaceHeading {
+  margin: 0;
+  text-align: center;
+  color: var(--_swatch---swatch--brand-text);
+  font-size: var(--_typography---font-size--h3);
+  font-weight: var(--_typography---font--primary-bold);
+  line-height: var(--_typography---line-height--small);
+}
+
+.espaceActions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--8);
+}
+.espaceCta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_spacing---space--3);
+  padding-block: var(--_spacing---space--6);
+  padding-inline: var(--_spacing---space--6);
+  border: var(--border-width--main) solid transparent;
+  border-radius: var(--radius--round);
+  font-size: var(--_typography---font-size--text-small);
+  font-weight: var(--_typography---font--primary-semibold);
+  line-height: var(--_typography---line-height--medium);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.espaceCta:focus-visible {
+  outline: var(--focus--width) solid var(--_swatch---swatch--brand-blue-600);
+  outline-offset: var(--focus--offset-outer);
+}
+.espaceCtaSecondary {
+  background: var(--_theme---button-secondary--background);
+  color: var(--_theme---button-secondary--text);
+  border-color: var(--_theme---button-secondary--border);
+}
+.espaceCtaSecondary:hover,
+.espaceCtaSecondary:focus-visible {
+  background: var(--_theme---button-secondary--background-hover);
+  color: var(--_theme---button-secondary--text-hover);
+  border-color: var(--_theme---button-secondary--border-hover);
+}
+.espaceCtaPrimary {
+  background: var(--_theme---button-primary--background);
+  color: var(--_theme---button-primary--text);
+  border-color: var(--_theme---button-primary--border);
+}
+.espaceCtaPrimary:hover,
+.espaceCtaPrimary:focus-visible {
+  background: var(--_theme---button-primary--background-hover);
+  color: var(--_theme---button-primary--text-hover);
+  border-color: var(--_theme---button-primary--border-hover);
+}
+
+/* Open/close — hide when closed; animate in when open. */
+.espaceOverlay[data-state="closed"],
+.espaceContent[data-state="closed"] {
+  display: none !important;
+}
+.espaceOverlay[data-state="open"] {
+  animation: espace-overlay-in 200ms ease;
+}
+.espaceContent[data-variant="desktop"][data-state="open"] {
+  animation: espace-modal-in 240ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.espaceContent[data-variant="mobile"][data-state="open"] {
+  animation: espace-drawer-in 300ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+@keyframes espace-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes espace-modal-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+@keyframes espace-drawer-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .espaceOverlay[data-state="open"],
+  .espaceContent[data-state="open"] {
+    animation: none;
+  }
+}
+
 /* ---------- Animation ---------- */
 .viewport[data-state="open"] {
   animation: nav-fade-in var(--nav--menu-open-duration, 0.2s) ease;

@@ -1,3 +1,4 @@
+export { ArrowForwardIcon } from "./ArrowForwardIcon"
 export { ChevronRightIcon } from "./ChevronRightIcon"
 export { CloseIcon } from "./CloseIcon"
 export { ContactIcon } from "./ContactIcon"

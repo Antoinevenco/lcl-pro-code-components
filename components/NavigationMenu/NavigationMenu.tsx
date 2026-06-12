@@ -2,6 +2,8 @@ import type { ReactNode } from "react"
 import { NavigationMenuDesktop } from "./desktop/NavigationMenuDesktop"
 import { NavigationMenuMobile } from "./mobile/NavigationMenuMobile"
 import { useMediaQuery } from "./hooks/useMediaQuery"
+import styles from "./styles"
+import { CurrentPathProvider, useCurrentPath } from "./hooks/useCurrentPath"
 import {
   defaultEspaceClient,
   defaultMenu,
@@ -52,35 +54,40 @@ export function NavigationMenu({
         }
       })
     : menu
-  const isMobile = useMediaQuery("(max-width: 1149.98px)", false)
+  // Desktop ↔ mobile is decided by CSS (`.mobileOnly` / `.desktopOnly`), not JS:
+  // Webflow renders the component to static HTML at publish time (no `window`),
+  // so a JS-only media query would bake the desktop tree into the HTML and flash
+  // to mobile after hydration. CSS media queries are evaluated on first paint,
+  // so the correct layout shows immediately. The wide ↔ compact split is a
+  // desktop-only sub-variant and stays on JS — no jarring cross-layout jump.
   const isCompact = useMediaQuery("(max-width: 1279.98px)", false)
-
-  const layout: "desktop" | "compact" | "mobile" = isMobile ? "mobile" : isCompact ? "compact" : "desktop"
-
-  if (layout === "mobile") {
-    return (
-      <NavigationMenuMobile
-        menu={resolvedMenu}
-        topBarLinks={topBarLinks}
-        ctaLabel={ctaLabel}
-        ctaHref={ctaHref}
-        logoHref={logoHref}
-        espace={espaceConfig}
-      />
-    )
-  }
+  const currentPath = useCurrentPath()
 
   return (
-    <NavigationMenuDesktop
-      menu={resolvedMenu}
-      topBarLinks={topBarLinks}
-      ctaLabel={ctaLabel}
-      ctaHref={ctaHref}
-      showSearch={showSearch}
-      variant={layout === "compact" ? "compact" : "wide"}
-      logoHref={logoHref}
-      espace={espaceConfig}
-    />
+    <CurrentPathProvider value={currentPath}>
+      <div className={styles.mobileOnly}>
+        <NavigationMenuMobile
+          menu={resolvedMenu}
+          topBarLinks={topBarLinks}
+          ctaLabel={ctaLabel}
+          ctaHref={ctaHref}
+          logoHref={logoHref}
+          espace={espaceConfig}
+        />
+      </div>
+      <div className={styles.desktopOnly}>
+        <NavigationMenuDesktop
+          menu={resolvedMenu}
+          topBarLinks={topBarLinks}
+          ctaLabel={ctaLabel}
+          ctaHref={ctaHref}
+          showSearch={showSearch}
+          variant={isCompact ? "compact" : "wide"}
+          logoHref={logoHref}
+          espace={espaceConfig}
+        />
+      </div>
+    </CurrentPathProvider>
   )
 }
 

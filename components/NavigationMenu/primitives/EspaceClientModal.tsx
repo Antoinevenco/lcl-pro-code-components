@@ -1,9 +1,10 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { useState } from "react"
 import type { EspaceClientConfig } from "../NavigationMenu.types"
-import { ArrowForwardIcon, CloseIcon, UserIcon } from "./icons"
-import { EspaceIllustration } from "./EspaceIllustration"
 import styles from "../styles"
+import { CtaButton } from "../../primitives/CtaButton"
+import { EspaceIllustration } from "./EspaceIllustration"
+import { ArrowExternalIcon, CloseIcon, UserIcon } from "./icons"
 
 export type EspaceClientModalProps = {
   /**
@@ -50,16 +51,16 @@ export function EspaceClientModal({
       <span ref={setContainer} style={{ display: "contents" }} />
 
       <Dialog.Portal container={container ?? undefined}>
-        <Dialog.Overlay className={styles.espaceOverlay} data-variant={variant} />
+        <Dialog.Overlay
+          className={styles.espaceOverlay}
+          data-variant={variant}
+        />
         <Dialog.Content className={styles.espaceContent} data-variant={variant}>
           <header className={styles.espaceHeader}>
             <Dialog.Title className={styles.espaceHeaderTitle}>
               {config.title}
             </Dialog.Title>
-            <Dialog.Close
-              className={styles.espaceClose}
-              aria-label="Fermer"
-            >
+            <Dialog.Close className={styles.espaceClose} aria-label="Fermer">
               <CloseIcon size={20} />
             </Dialog.Close>
           </header>
@@ -71,20 +72,20 @@ export function EspaceClientModal({
             </div>
 
             <div className={styles.espaceActions}>
-              <a
+              <CtaButton
                 href={config.proHref}
-                className={`${styles.espaceCta} ${styles.espaceCtaSecondary}`}
-              >
-                <span>{config.proLabel}</span>
-                <ArrowForwardIcon size={24} />
-              </a>
-              <a
+                label={config.proLabel}
+                variant="secondary"
+                arrow={<ArrowExternalIcon size={24} />}
+                block
+              />
+              <CtaButton
                 href={config.comptesHref}
-                className={`${styles.espaceCta} ${styles.espaceCtaPrimary}`}
-              >
-                <span>{config.comptesLabel}</span>
-                <ArrowForwardIcon size={24} />
-              </a>
+                label={config.comptesLabel}
+                variant="primary"
+                arrow={<ArrowExternalIcon size={24} />}
+                block
+              />
             </div>
           </div>
         </Dialog.Content>

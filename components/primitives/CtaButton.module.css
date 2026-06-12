@@ -1,0 +1,89 @@
+/* ---------- CtaButton (shared CTA) ----------
+   The single CTA button shared across components (NavigationMenu header / mobile
+   footer / Espace client modal, OfferFilter, …). Typography mirrors Webflow's
+   `u-text-style-button` (heading family, text-main, ss04/ss06) and the label is
+   leading-trimmed so its box hugs the cap height — padding is then measured from
+   that tight box, exactly like native Webflow buttons. Padding is fixed; the
+   total height still shrinks on smaller viewports because the fluid font-size
+   shrinks the trimmed label. */
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: var(--_spacing---space--4);
+  padding-block: 1rem;
+  padding-inline: 2rem;
+  border: var(--border-width--main) solid transparent;
+  border-radius: var(--radius--round);
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.cta:focus-visible {
+  outline: var(--focus--width) solid var(--_swatch---swatch--brand-blue-600);
+  outline-offset: var(--focus--offset-outer);
+}
+.ctaBlock {
+  width: 100%;
+}
+
+/* Label carries the Webflow button text style + leading trim. flow-root gives
+   the trim pseudo-elements a block formatting context so their negative margins
+   pull the line box tight instead of collapsing out of the label. */
+.ctaLabel {
+  display: flow-root;
+  font-family: var(--_typography---font--heading-family);
+  font-size: var(--_typography---font-size--text-main);
+  line-height: var(--_typography---line-height--medium);
+  font-weight: var(--_typography---font--primary-semibold);
+  letter-spacing: var(--_typography---letter-spacing--normal);
+  font-feature-settings: "ss04", "ss06";
+}
+.ctaLabel::before,
+.ctaLabel::after {
+  content: "";
+  display: table;
+}
+.ctaLabel::before {
+  margin-bottom: calc(-1 * var(--_typography---font--primary-trim-top));
+}
+.ctaLabel::after {
+  margin-top: calc(-1 * var(--_typography---font--primary-trim-bottom));
+}
+
+.ctaArrow {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* The trimmed label is shorter than the ~1.5rem icon, so a naive flex child
+     would let the icon drive the button height — making arrow buttons taller
+     than plain ones. Symmetric negative block margins trim the icon's height
+     contribution (1.5rem − 2×0.5rem = 0.5rem ≤ label box) so the trimmed label
+     stays the height driver, while keeping the icon optically centered. */
+  margin-block: -0.5rem;
+}
+
+.ctaPrimary {
+  background: var(--_theme---button-primary--background);
+  color: var(--_theme---button-primary--text);
+  border-color: var(--_theme---button-primary--border);
+}
+.ctaPrimary:hover,
+.ctaPrimary:focus-visible {
+  background: var(--_theme---button-primary--background-hover);
+  color: var(--_theme---button-primary--text-hover);
+  border-color: var(--_theme---button-primary--border-hover);
+}
+.ctaSecondary {
+  background: var(--_theme---button-secondary--background);
+  color: var(--_theme---button-secondary--text);
+  border-color: var(--_theme---button-secondary--border);
+}
+.ctaSecondary:hover,
+.ctaSecondary:focus-visible {
+  background: var(--_theme---button-secondary--background-hover);
+  color: var(--_theme---button-secondary--text-hover);
+  border-color: var(--_theme---button-secondary--border-hover);
+}

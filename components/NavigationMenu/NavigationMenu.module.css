@@ -85,10 +85,10 @@
 }
 .topBarLink:hover,
 .topBarLink:focus-visible {
-  color: var(--_swatch---swatch--brand-blue-900);
+  color: var(--_swatch---swatch--brand-blue-600);
 }
 .topBarLink[data-current="true"] {
-  color: var(--_swatch---swatch--brand-blue-900);
+  color: var(--_swatch---swatch--brand-blue-600);
   font-weight: var(--_typography---font--primary-semibold);
 }
 .topBarLink[data-current="true"]::after {
@@ -97,7 +97,9 @@
   inset-inline: 0;
   bottom: -2px;
   height: 2px;
-  background: var(--_swatch---swatch--brand-blue-900);
+  width: 1.5rem;
+  margin-inline: auto;
+  background: var(--_swatch---swatch--brand-blue-600);
 }
 .topBarAccent {
   color: var(--_swatch---swatch--brand-blue-600);
@@ -114,6 +116,22 @@
   background: var(--_swatch---swatch--brand-white);
   border-bottom: var(--border-width--main) solid var(--nav-border);
 }
+/* Layout switch is CSS-driven so the correct version paints before JS runs
+ * (Webflow ships static HTML; a JS-only media query flashes desktop→mobile on
+ * load). `display: none` also keeps the hidden tree out of the a11y tree, so
+ * only one <nav> landmark / one dialog is ever exposed. */
+.desktopOnly {
+  display: none;
+}
+@media (min-width: 1150px) {
+  .mobileOnly {
+    display: none;
+  }
+  .desktopOnly {
+    display: block;
+  }
+}
+
 /* Logo bleeds to the left edge on desktop only — on mobile keep the inline padding. */
 @media (min-width: 1150px) {
   .bar {
@@ -185,7 +203,7 @@
   gap: var(--_spacing---space--8);
   list-style: none;
   margin: 0;
-  padding-inline-start: var(--_spacing---space--8);
+  padding-inline-start: 0;
   flex: 0 1 auto;
 }
 
@@ -232,7 +250,6 @@
   min-width: 0;
   justify-content: flex-end;
 }
-.barTools > .cta,
 .barTools > .iconButton {
   flex-shrink: 0;
 }
@@ -296,26 +313,9 @@
   border-color: var(--_theme---button-secondary--border-hover);
 }
 
-.cta {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--_spacing---space--4);
-  height: 2.75rem;
-  padding-inline: var(--_spacing---space--8);
-  background: var(--_theme---button-primary--background);
-  color: var(--_theme---button-primary--text);
-  border: 1px solid var(--_theme---button-primary--border);
-  border-radius: var(--radius--round);
-  text-decoration: none;
-  font-weight: var(--_typography---font--primary-semibold);
-  font-size: var(--_typography---font-size--text-small);
-  white-space: nowrap;
-}
-.cta:hover,
-.cta:focus-visible {
-  background: var(--_theme---button-primary--background-hover);
-  border-color: var(--_theme---button-primary--border-hover);
-}
+/* The shared CTA button (header, mobile footer, Espace client modal) lives in
+   components/primitives/CtaButton — styles travel with it in its own CSS
+   module. Nothing CTA-related is defined here anymore. */
 
 /* ---------- Viewport / panel ---------- */
 .viewportWrap {
@@ -481,7 +481,8 @@
   color: var(--_swatch---swatch--brand-text);
   line-height: var(--_typography---line-height--medium);
 }
-.item:hover .itemLabel {
+.item:hover .itemLabel,
+.item[aria-current="page"] .itemLabel {
   color: var(--_swatch---swatch--brand-blue-600);
 }
 .itemDescription {
@@ -503,7 +504,8 @@
   line-height: var(--_typography---line-height--medium);
 }
 .itemRow:hover,
-.itemRow:focus-visible {
+.itemRow:focus-visible,
+.itemRow[aria-current="page"] {
   color: var(--_swatch---swatch--brand-blue-600);
 }
 .chevron {
@@ -771,6 +773,9 @@
 .mobileListItem[data-variant="quiet"] {
   font-weight: var(--_typography---font--primary-semibold);
 }
+.mobileListItem[aria-current="page"] {
+  color: var(--_swatch---swatch--brand-blue-600);
+}
 .mobileListSection {
   padding: var(--_spacing---space--8) var(--nav-inline-padding)
     var(--_spacing---space--6);
@@ -812,10 +817,6 @@
   gap: var(--_spacing---space--6);
   padding: var(--_spacing---space--8) var(--nav-inline-padding);
   background: var(--nav-tinted-bg);
-}
-.mobileFooter .cta {
-  width: 100%;
-  justify-content: center;
 }
 
 .divider {
@@ -971,48 +972,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--_spacing---space--8);
-}
-.espaceCta {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--_spacing---space--3);
-  padding-block: var(--_spacing---space--6);
-  padding-inline: var(--_spacing---space--6);
-  border: var(--border-width--main) solid transparent;
-  border-radius: var(--radius--round);
-  font-size: var(--_typography---font-size--text-small);
-  font-weight: var(--_typography---font--primary-semibold);
-  line-height: var(--_typography---line-height--medium);
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-}
-.espaceCta:focus-visible {
-  outline: var(--focus--width) solid var(--_swatch---swatch--brand-blue-600);
-  outline-offset: var(--focus--offset-outer);
-}
-.espaceCtaSecondary {
-  background: var(--_theme---button-secondary--background);
-  color: var(--_theme---button-secondary--text);
-  border-color: var(--_theme---button-secondary--border);
-}
-.espaceCtaSecondary:hover,
-.espaceCtaSecondary:focus-visible {
-  background: var(--_theme---button-secondary--background-hover);
-  color: var(--_theme---button-secondary--text-hover);
-  border-color: var(--_theme---button-secondary--border-hover);
-}
-.espaceCtaPrimary {
-  background: var(--_theme---button-primary--background);
-  color: var(--_theme---button-primary--text);
-  border-color: var(--_theme---button-primary--border);
-}
-.espaceCtaPrimary:hover,
-.espaceCtaPrimary:focus-visible {
-  background: var(--_theme---button-primary--background-hover);
-  color: var(--_theme---button-primary--text-hover);
-  border-color: var(--_theme---button-primary--border-hover);
 }
 
 /* Open/close — hide when closed; animate in when open. */

@@ -1,14 +1,16 @@
 import * as Dialog from "@radix-ui/react-dialog"
 import { useEffect, useState } from "react"
+import { CtaButton } from "../../primitives/CtaButton"
 import type {
   EspaceClientConfig,
   MenuTree,
   TopBarLink,
 } from "../NavigationMenu.types"
+import { secondaryLinks } from "../data/menu"
 import { useMenuStack } from "../hooks/useMenuStack"
+import { EspaceClientModal } from "../primitives/EspaceClientModal"
 import { Logo } from "../primitives/Logo"
 import { CloseIcon, ContactIcon, MenuIcon } from "../primitives/icons"
-import { EspaceClientModal } from "../primitives/EspaceClientModal"
 import styles from "../styles"
 import { MenuStackScreen } from "./MenuStackScreen"
 
@@ -91,7 +93,7 @@ export function NavigationMenuMobile({
                   kind="root"
                   topBarLinks={topBarLinks}
                   menu={menu}
-                  secondaryLinks={[{ label: "Découvrir LCL", href: "#" }]}
+                  secondaryLinks={secondaryLinks}
                   onPushEntry={(entry) => push({ kind: "entry", entry })}
                 />
               ) : current.kind === "entry" ? (
@@ -115,12 +117,10 @@ export function NavigationMenuMobile({
           </div>
 
           <footer className={styles.mobileFooter}>
-            <a className={styles.cta} href={ctaHref}>
-              {ctaLabel}
-            </a>
+            <CtaButton href={ctaHref} label={ctaLabel} block />
             <a
               className={styles.topBarLink}
-              href="#"
+              href="/contacter-lcl-professionnel"
               style={{ color: "var(--_swatch---swatch--brand-blue-600)" }}
             >
               <ContactIcon />

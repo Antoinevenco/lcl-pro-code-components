@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
+import { CtaButton } from "../primitives/CtaButton"
 import { SelectField } from "../Form/primitives/SelectField"
 import type { Offer } from "./OfferFilter.types"
 import styles from "./styles"
@@ -166,14 +167,13 @@ export function OfferFilter({
         contentClassName={styles.content}
       />
 
-      <a
-        className={styles.cta}
+      <CtaButton
         href={ctaHref}
+        label={ctaLabel}
         target={ctaTarget}
         rel={ctaTarget === "_blank" ? "noopener noreferrer" : undefined}
-      >
-        {ctaLabel}
-      </a>
+        block
+      />
     </div>
   )
 }

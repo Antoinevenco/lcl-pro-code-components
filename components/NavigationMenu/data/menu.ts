@@ -3,6 +3,7 @@ import type {
   EspaceClientConfig,
   FeatureCard,
   MenuTree,
+  SecondaryLink,
   TopBarLink,
 } from "../NavigationMenu.types"
 
@@ -13,13 +14,18 @@ export const topBarLinks: TopBarLink[] = [
   { label: "Entreprises", href: "https://www.lcl.fr/entreprise" },
 ]
 
+export const secondaryLinks: SecondaryLink[] = [
+  // { label: "Découvrir LCL", href: "#" },
+]
+
 export const defaultEspaceClient: EspaceClientConfig = {
   title: "Espace client en ligne",
   heading: "Choisir mon espace dédié",
   proLabel: "Accéder à LCL Espace Pro",
-  proHref: "#",
+  proHref:
+    "https://espacepro.secure.lcl.fr/outil/IQEN/Authentication/indexRedirect",
   comptesLabel: "Accéder à mes comptes",
-  comptesHref: "#",
+  comptesHref: "https://monespace.lcl.fr/connexion",
 }
 
 const comptesCards: FeatureCard[] = [
@@ -106,15 +112,15 @@ const savoirFaireDifferenciantsCards: FeatureCard[] = [
 export const defaultMenu: MenuTree = [
   {
     label: "Comptes et Opérations",
-    ctaLabel: "Tout savoir sur nos comptes pro",
-    ctaHref: "#",
+    // ctaLabel: "Tout savoir sur nos comptes pro",
+    // ctaHref: "#",
     featureCards: comptesCards,
     sections: [
       {
         label: "Nos offres du quotidien",
         variant: "primary",
-        ctaLabel: "Tout savoir sur nos comptes pro",
-        ctaHref: "#",
+        // ctaLabel: "Tout savoir sur nos comptes pro",
+        // ctaHref: "#",
         items: [
           {
             label: "Choisir votre façon d'ouvrir un compte pro",
@@ -162,8 +168,8 @@ export const defaultMenu: MenuTree = [
   },
   {
     label: "Nos savoir-faire",
-    ctaLabel: "Tout nos savoir-faire",
-    ctaHref: "#",
+    // ctaLabel: "Tous nos savoir-faire",
+    // ctaHref: "#",
     tabs: [
       {
         label: "Nos essentiels",
@@ -172,8 +178,8 @@ export const defaultMenu: MenuTree = [
           {
             label: "Nos essentiels",
             variant: "primary",
-            ctaLabel: "Tout nos savoir-faire",
-            ctaHref: "#",
+            // ctaLabel: "Tous nos savoir-faire",
+            // ctaHref: "#",
             items: [
               {
                 label: "Se financer",
@@ -205,26 +211,26 @@ export const defaultMenu: MenuTree = [
         ],
       },
       {
-        label: "Nos différenciants",
+        label: "Ce qui nous distingue",
         featureCards: savoirFaireDifferenciantsCards,
         sections: [
           {
             label: "Ce qui nous distingue",
             variant: "primary",
-            ctaLabel: "Tout nos savoir-faire",
-            ctaHref: "#",
+            // ctaLabel: "Tous nos savoir-faire",
+            // ctaHref: "#",
             items: [
               {
                 label: "Fidéliser ses salariés",
                 href: "/fideliser-salaries",
                 description:
-                  "Épargne salariale, intéressement et participation, assurance collective …",
+                  "Épargne salariale, intéressement et participation, assurance collective…",
               },
               {
                 label: "Libérer votre esprit d'entreprendre",
                 href: "/care-entrepreneurs",
                 description:
-                  "Care entrepreneur, un programme innovant permettant d'alléger la charge mentale des entrepreneurs",
+                  "Care Entrepreneurs est un dispositif extra-financier pour alléger la charge mentale des entrepreneurs et les accompagner au quotidien.",
               },
               {
                 label: "Accompagner vos transitions",
@@ -265,7 +271,7 @@ export const defaultMenu: MenuTree = [
     ],
     sections: [
       {
-        label: "Profil",
+        label: "Profils",
         variant: "primary",
         items: [
           { label: "Créateur / indépendant", href: "/createur-independant" },
@@ -284,11 +290,11 @@ export const defaultMenu: MenuTree = [
         items: [
           { label: "Santé", href: "/professions-liberales-sante" },
           {
-            label: "Droit, chiffre et conseil",
+            label: "Chiffre, droit et technique",
             href: "/professions-liberales-chiffre-droit-justice",
           },
           { label: "Artisans et commerçants", href: "/artisans-commercants" },
-          { label: "Services", href: "#" },
+
           { label: "Franchise", href: "/franchises" },
         ],
       },

@@ -65,6 +65,11 @@ export type TopBarLink = {
   current?: boolean
 }
 
+export type SecondaryLink = {
+  label: string
+  href: string
+}
+
 /** Content of the "Espace client en ligne" modal/drawer opened from the user icon. */
 export type EspaceClientConfig = {
   /** Title shown in the coloured header bar. */

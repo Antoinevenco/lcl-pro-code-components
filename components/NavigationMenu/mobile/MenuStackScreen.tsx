@@ -1,6 +1,12 @@
 import { useEffect, useRef } from "react"
-import type { MenuEntry, MenuSection, MenuTab } from "../NavigationMenu.types"
+import type {
+  MenuEntry,
+  MenuSection,
+  MenuTab,
+  SecondaryLink,
+} from "../NavigationMenu.types"
 import { Chevron } from "../primitives/Chevron"
+import { isActiveHref, useActivePath } from "../hooks/useCurrentPath"
 import styles from "../styles"
 
 type CommonProps = {
@@ -14,7 +20,7 @@ export type RootScreenProps = CommonProps & {
   kind: "root"
   topBarLinks: { label: string; href: string; current?: boolean }[]
   menu: MenuEntry[]
-  secondaryLinks: { label: string; href: string }[]
+  secondaryLinks: SecondaryLink[]
 }
 
 export type EntryScreenProps = CommonProps & {
@@ -47,6 +53,7 @@ function RootScreen({
 }: RootScreenProps) {
   const tabsRef = useRef<HTMLDivElement>(null)
   const currentTabRef = useRef<HTMLAnchorElement>(null)
+  const currentPath = useActivePath()
 
   // Anchor the horizontal scroll so the active top-nav item is in view by
   // default — the rail is left-aligned + horizontally scrollable, and the
@@ -90,7 +97,13 @@ function RootScreen({
                   <Chevron />
                 </button>
               ) : (
-                <a className={styles.mobileListItem} href={entry.href ?? "#"}>
+                <a
+                  className={styles.mobileListItem}
+                  href={entry.href ?? "#"}
+                  aria-current={
+                    isActiveHref(entry.href, currentPath) ? "page" : undefined
+                  }
+                >
                   <span>{entry.label}</span>
                   <Chevron />
                 </a>
@@ -211,13 +224,20 @@ function SubHeader({ title, onBack }: { title: string; onBack?: () => void }) {
 }
 
 function SectionList({ section }: { section: MenuSection }) {
+  const currentPath = useActivePath()
   return (
     <>
       <h3 className={styles.mobileListSection}>{section.label}</h3>
       <ul className={styles.mobileList}>
         {section.items.map((item) => (
           <li key={item.label}>
-            <a className={styles.mobileListItem} href={item.href}>
+            <a
+              className={styles.mobileListItem}
+              href={item.href}
+              aria-current={
+                isActiveHref(item.href, currentPath) ? "page" : undefined
+              }
+            >
               <span>{item.label}</span>
               <Chevron />
             </a>

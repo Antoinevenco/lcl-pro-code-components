@@ -1,5 +1,5 @@
-import { declareComponent } from "@webflow/react"
 import { props } from "@webflow/data-types"
+import { declareComponent } from "@webflow/react"
 import type { ReactNode } from "react"
 import NavigationMenu from "./NavigationMenu"
 import {
@@ -55,9 +55,13 @@ function NavigationMenuWebflow({
         title: espaceTitle,
         heading: espaceHeading,
         proLabel: espaceProLabel,
-        proHref: espaceProHref?.href ?? "#",
+        // props.Link can't carry a defaultValue (Link is in
+        // PropTypesWithoutDefaultValue), so fall back to the real LCL URL the
+        // label already defaults to — never "#", which would override the
+        // defaultEspaceClient href on every render until a designer sets it.
+        proHref: espaceProHref?.href ?? defaultEspaceClient.proHref,
         comptesLabel: espaceComptesLabel,
-        comptesHref: espaceComptesHref?.href ?? "#",
+        comptesHref: espaceComptesHref?.href ?? defaultEspaceClient.comptesHref,
       }}
       asideSlots={{
         "Comptes et Opérations": asideComptes,
@@ -79,7 +83,10 @@ export default declareComponent(NavigationMenuWebflow, {
   group: "Navigation",
   props: {
     logoHref: props.Link({ name: "Logo link" }),
-    ctaLabel: props.Text({ name: "CTA label", defaultValue: "Ouvrir un compte" }),
+    ctaLabel: props.Text({
+      name: "CTA label",
+      defaultValue: "Ouvrir un compte",
+    }),
     ctaHref: props.Link({ name: "CTA link" }),
     showSearch: props.Boolean({
       name: "Show search",
@@ -112,6 +119,6 @@ export default declareComponent(NavigationMenuWebflow, {
     espaceComptesHref: props.Link({ name: "Espace · Comptes link" }),
   },
   options: {
-    ssr: false,
+    ssr: true,
   },
 })

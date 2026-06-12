@@ -1,14 +1,17 @@
 import * as NavMenu from "@radix-ui/react-navigation-menu"
-import styles from "../styles"
-import { MegaMenuPanel } from "./MegaMenuPanel"
-import { Logo } from "../primitives/Logo"
-import { ContactIcon, SearchIcon } from "../primitives/icons"
-import { EspaceClientModal } from "../primitives/EspaceClientModal"
+import { useRef } from "react"
+import { CtaButton } from "../../primitives/CtaButton"
 import type {
   EspaceClientConfig,
   MenuTree,
   TopBarLink,
 } from "../NavigationMenu.types"
+import { isActiveHref, useActivePath } from "../hooks/useCurrentPath"
+import { EspaceClientModal } from "../primitives/EspaceClientModal"
+import { Logo } from "../primitives/Logo"
+import { ContactIcon, SearchIcon } from "../primitives/icons"
+import styles from "../styles"
+import { MegaMenuPanel } from "./MegaMenuPanel"
 
 export type NavigationMenuDesktopProps = {
   menu: MenuTree
@@ -33,8 +36,30 @@ export function NavigationMenuDesktop({
   espace,
   onMenuOpenChange,
 }: NavigationMenuDesktopProps) {
+  const currentPath = useActivePath()
+  const navRef = useRef<HTMLElement>(null)
+
+  // Webflow renders code components as web components with Shadow DOM, and slot
+  // content (the designer's card components) lives in the host's *light* DOM,
+  // projected into the panel via a native <slot>. Radix's DismissableLayer
+  // lives in the shadow tree and detects "outside" clicks via React event
+  // propagation, which never reaches it from light-DOM nodes — so a click on a
+  // slotted card looks like an outside click and closes the menu on pointerdown,
+  // unmounting the <slot> before the click can navigate. Slotted content is
+  // always a descendant of the shadow host, so when an outside interaction's
+  // target is inside the host we keep the menu open (preventDefault) and let the
+  // native navigation run. No-op in the local non-shadow preview.
+  const keepOpenForSlottedContent = (
+    event: CustomEvent<{ originalEvent: Event }>,
+  ) => {
+    const root = navRef.current?.getRootNode()
+    const host = root instanceof ShadowRoot ? root.host : null
+    const target = event.target as Node | null
+    if (host && target && host.contains(target)) event.preventDefault()
+  }
+
   return (
-    <nav aria-label="Main navigation" className={styles.root}>
+    <nav ref={navRef} aria-label="Main navigation" className={styles.root}>
       <div className={styles.topBar}>
         <div className={styles.topBarSection}>
           {topBarLinks.map((l) => (
@@ -50,10 +75,13 @@ export function NavigationMenuDesktop({
           ))}
         </div>
         <div className={styles.topBarSection}>
-          <a className={`${styles.topBarLink} ${styles.topBarAccent}`} href="#">
+          {/* <a className={`${styles.topBarLink} ${styles.topBarAccent}`} href="#">
             Découvrir LCL
-          </a>
-          <a className={`${styles.topBarLink} ${styles.topBarAccent}`} href="#">
+          </a> */}
+          <a
+            className={`${styles.topBarLink} ${styles.topBarAccent}`}
+            href="/contacter-lcl-professionnel"
+          >
             <ContactIcon />
             Nous contacter
           </a>
@@ -81,6 +109,7 @@ export function NavigationMenuDesktop({
                       {entry.label}
                     </NavMenu.Trigger>
                     <NavMenu.Content
+                      onInteractOutside={keepOpenForSlottedContent}
                       onPointerLeave={(e) => {
                         // Some Webflow slot wrappers (and components rendered into them)
                         // emit pointer events that don't bubble through Radix's DOM
@@ -102,8 +131,19 @@ export function NavigationMenuDesktop({
                     </NavMenu.Content>
                   </>
                 ) : (
-                  <NavMenu.Link asChild>
-                    <a href={entry.href ?? "#"} className={styles.trigger}>
+                  <NavMenu.Link
+                    asChild
+                    active={isActiveHref(entry.href, currentPath)}
+                  >
+                    <a
+                      href={entry.href ?? "#"}
+                      className={styles.trigger}
+                      aria-current={
+                        isActiveHref(entry.href, currentPath)
+                          ? "page"
+                          : undefined
+                      }
+                    >
                       {entry.label}
                     </a>
                   </NavMenu.Link>
@@ -134,9 +174,7 @@ export function NavigationMenuDesktop({
             </button>
           ) : null}
 
-          <a className={styles.cta} href={ctaHref}>
-            {ctaLabel}
-          </a>
+          <CtaButton href={ctaHref} label={ctaLabel} />
 
           <EspaceClientModal variant="desktop" config={espace} />
         </div>

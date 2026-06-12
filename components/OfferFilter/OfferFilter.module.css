@@ -139,37 +139,5 @@
   overflow: hidden;
 }
 
-/* ── Primary CTA ────────────────────────────────────────────────────────── */
-
-.cta {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 2.5rem; /* Figma: 40px */
-  padding-inline: var(--_spacing---space--6);
-  padding-block: var(--_spacing---space--3);
-  background: var(--_theme---button-primary--background);
-  color: var(--_theme---button-primary--text);
-  border: 1px solid var(--_theme---button-primary--border);
-  border-radius: var(--_sizes---🟢-radius--border-radius-rounded);
-  font-family: inherit;
-  font-size: var(--_typography---font-size--text-main);
-  font-weight: var(--_typography---font--primary-semibold);
-  line-height: var(--_typography---line-height--large);
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 300ms ease, color 300ms ease;
-}
-
-.cta:hover {
-  background: var(--_theme---button-primary--background-hover);
-  border-color: var(--_theme---button-primary--border-hover);
-  color: var(--_theme---button-primary--text-hover);
-}
-
-.cta:focus-visible {
-  outline: var(--focus--width, 0.125rem) solid
-    var(--_swatch---swatch--brand-blue-600);
-  outline-offset: var(--focus--offset-outer, 0.1875rem);
-}
+/* Primary CTA now uses the shared CtaButton primitive
+   (components/primitives/CtaButton) so it matches every other CTA. */

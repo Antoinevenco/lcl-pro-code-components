@@ -1,5 +1,5 @@
-import { declareComponent } from "@webflow/react"
 import { props } from "@webflow/data-types"
+import { declareComponent } from "@webflow/react"
 import type { ReactNode } from "react"
 import Form from "./Form"
 
@@ -70,6 +70,6 @@ export default declareComponent(FormWebflow, {
     }),
   },
   options: {
-    ssr: false,
+    ssr: true,
   },
 })

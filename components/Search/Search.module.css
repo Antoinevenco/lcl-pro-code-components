@@ -1,0 +1,168 @@
+/* =========================================================================
+ * Search — token-driven styles
+ * Tokens come from /reference code/variables.css. The site bundles that file
+ * globally, so the variables resolve at runtime in Webflow.
+ *
+ * The look is re-derived from NavigationMenu's `.search` / `.iconButton` rules
+ * so it matches the white nav surface — NOT the old dark glassmorphism palette.
+ * Only raw values used are 1px borders and transforms.
+ * ========================================================================= */
+
+/* Self-contained box model: published Webflow sites apply a global border-box
+   reset, but local/other hosts may not. Scope it to the component. */
+.root,
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root {
+  /* Local aliases off the global tokens — mirrors NavigationMenu.module.css so
+     a future retune is one line. */
+  --search-border: var(--_swatch---swatch--brand-neutral-200);
+  --search-accent: var(--_swatch---swatch--brand-blue-600);
+  --search-muted: var(--_swatch---swatch--brand-text-o60);
+  --search-surface: var(--_swatch---swatch--brand-white);
+  --search-control-height: 2.75rem;
+
+  font-family: var(--_typography---font--primary-family);
+  color: var(--_theme---text-1);
+  width: 100%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root *,
+  .root *::before,
+  .root *::after {
+    transition: none !important;
+  }
+  .pill:active {
+    transform: none;
+  }
+}
+
+/* ── Icon button (compact trigger — mirrors nav `.iconButton`) ──────────── */
+/* The icon variant renders standalone (no `.root` wrapper), so it carries its
+   own border-box reset + local aliases. */
+.iconButton,
+.iconButton *,
+.iconButton *::before,
+.iconButton *::after {
+  box-sizing: border-box;
+}
+
+.iconButton {
+  --search-border: var(--_swatch---swatch--brand-neutral-200);
+  --search-accent: var(--_swatch---swatch--brand-blue-600);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius--round, 100vw);
+  border: 1px solid var(--search-border);
+  background: var(--_theme---button-secondary--background);
+  color: var(--_theme---button-secondary--text);
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+  font: inherit;
+  transition: color 300ms ease, background-color 300ms ease,
+    border-color 300ms ease, box-shadow 300ms ease;
+}
+.iconButton:hover,
+.iconButton:focus-visible {
+  background: var(--_theme---button-secondary--background-hover);
+  color: var(--_theme---button-secondary--text-hover);
+  border-color: var(--_theme---button-secondary--border-hover);
+}
+.iconButton:focus-visible {
+  outline: var(--focus--width, 0.125rem) solid var(--search-accent);
+  outline-offset: var(--focus--offset-outer, 0.1875rem);
+}
+
+/* ── Hero variant (full bar + suggestion pills) ─────────────────────────── */
+.heroWrap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--6);
+  width: 100%;
+  max-width: 30rem;
+}
+
+.heroBar {
+  display: flex;
+  align-items: center;
+  gap: var(--_spacing---space--5);
+  min-height: var(--search-control-height);
+  padding-inline: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--3);
+  border: 1px solid var(--search-border);
+  border-radius: var(--radius--round, 100vw);
+  background: var(--search-surface);
+  color: var(--search-muted);
+  font-size: var(--_typography---font-size--text-small);
+  cursor: text;
+  transition: border-color 300ms ease, box-shadow 300ms ease;
+}
+.heroBar:hover {
+  border-color: var(--search-accent);
+}
+.heroBar:focus-visible {
+  outline: none;
+  border-color: var(--search-accent);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+.heroBar svg {
+  flex-shrink: 0;
+  color: var(--_swatch---swatch--brand-blue-900);
+}
+
+.heroPlaceholder {
+  flex: 1;
+  min-width: 0;
+  color: var(--search-muted);
+  font-size: var(--_typography---font-size--text-small);
+  font-weight: var(--_typography---font--primary-medium);
+  user-select: none;
+}
+
+.pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--_spacing---space--4);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding-inline: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--3);
+  border: 1px solid var(--search-border);
+  border-radius: var(--radius--round, 100vw);
+  background: var(--search-surface);
+  color: var(--_swatch---swatch--brand-blue-900);
+  font-family: inherit;
+  font-size: var(--_typography---font-size--text-small);
+  font-weight: var(--_typography---font--primary-semibold);
+  cursor: pointer;
+  user-select: none;
+  transition: color 300ms ease, background-color 300ms ease,
+    border-color 300ms ease, transform 150ms ease;
+}
+.pill:hover,
+.pill:focus-visible {
+  border-color: var(--search-accent);
+  color: var(--search-accent);
+}
+.pill:active {
+  transform: scale(0.97);
+}
+.pill:focus-visible {
+  outline: var(--focus--width, 0.125rem) solid var(--search-accent);
+  outline-offset: var(--focus--offset-outer, 0.1875rem);
+}

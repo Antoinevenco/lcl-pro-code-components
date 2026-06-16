@@ -5,7 +5,8 @@
       "./components/NavigationMenu/NavigationMenu.webflow.tsx",
       "./components/Form/Form.webflow.tsx",
       "./components/OfferFilter/OfferFilter.webflow.tsx",
-      "./components/Search/Search.webflow.tsx"
+      "./components/Search/Search.webflow.tsx",
+      "./components/RemoteForm/RemoteForm.webflow.tsx"
     ],
     "description": "",
     "id": "lcl-pro-code-components"

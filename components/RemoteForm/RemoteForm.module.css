@@ -1,0 +1,275 @@
+/* =========================================================================
+ * RemoteForm — token-driven styles
+ *
+ * RemoteForm reuses the `Form` primitives (TextInput, SelectField,
+ * RadioCardGroup, TextareaField, ConsentCheckbox, SubmitButton, Field), which
+ * carry their own styling from `Form/Form.module.css`. This module styles the
+ * dynamic *shell* (root / eyebrow / section / rows / status), the loading &
+ * error states unique to a data-driven form, the visually-hidden honeypot, and
+ * the multi-checkbox `CheckboxGroup` primitive.
+ *
+ * The shell rules are duplicated from `Form.module.css` (rather than imported)
+ * so the component is self-contained and ships its own stylesheet, exactly
+ * like `Form`. All values are `var(--_…)` tokens from
+ * /reference code/variables.css (bundled globally by the Webflow site).
+ * ========================================================================= */
+
+/* Self-contained box model (same reset as Form). */
+.root,
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+.root {
+  font-family: var(--_typography---font--primary-family);
+  color: var(--_theme---text-1);
+  background: var(--_theme---background-2);
+  border-radius: var(--radius--medium);
+  padding: var(--_cards---card-padding);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--12);
+
+  /* TODO: add Webflow var --wf--functional-error (no error-text token exists). */
+  --form-error: #e52615;
+  --form-control-min-height: 3.5rem;
+  --form-col-min: 20rem;
+  --form-col-gap: var(--_spacing---space--10);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .root *,
+  .root *::before,
+  .root *::after {
+    transition: none !important;
+  }
+}
+
+/* ── Eyebrow / section titles ──────────────────────────────────────────── */
+
+.eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  font-family: var(--_typography---font--primary-family);
+  font-weight: var(--_typography---font--primary-semibold);
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+  letter-spacing: 0.02em;
+}
+
+.section {
+  /* <fieldset> reset */
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--8);
+}
+
+.sectionTitle {
+  padding: 0;
+  margin: 0 0 var(--_spacing---space--8);
+  font-weight: var(--_typography---font--primary-bold);
+  font-size: var(--_typography---font-size--h2);
+  line-height: var(--_typography---line-height--medium);
+  color: var(--_theme---text-heading-1);
+}
+
+/* ── Field rows ────────────────────────────────────────────────────────── */
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(var(--form-col-min), 100%), 1fr)
+  );
+  gap: var(--form-col-gap);
+  align-items: start;
+}
+
+.rowFull {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+
+/* ── Multi-checkbox group (CheckboxGroup primitive) ────────────────────── */
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: var(--_spacing---space--5);
+  width: 100%;
+}
+
+.checkboxOption {
+  display: flex;
+  align-items: center;
+  gap: var(--_spacing---space--5);
+  padding: var(--_spacing---space--6);
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-x-small);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 200ms ease, box-shadow 200ms ease;
+}
+
+.checkboxOption:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkboxOption:focus-within {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkboxOption[data-state="checked"] {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkboxOption[data-invalid="true"] {
+  border-color: var(--form-error);
+}
+
+/* The Radix checkbox box — mirrors Form's `.checkbox`. */
+.checkboxBox {
+  flex-shrink: 0;
+  width: 1.25rem;
+  height: 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--_swatch---swatch--brand-white);
+  border: 1px solid var(--_theme---border-2);
+  border-radius: var(--_sizes---🟢-radius--border-radius-3x-small);
+  cursor: pointer;
+  transition: border-color 200ms ease, background 200ms ease;
+}
+
+.checkboxBox:hover {
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkboxBox:focus-visible {
+  outline: none;
+  border-color: var(--_swatch---swatch--brand-blue-600);
+  box-shadow: 0 0 0 var(--focus--width, 0.125rem)
+    var(--_swatch---swatch--brand-blue-900-o20);
+}
+
+.checkboxBox[data-state="checked"] {
+  background: var(--_swatch---swatch--brand-blue-600);
+  border-color: var(--_swatch---swatch--brand-blue-600);
+}
+
+.checkboxIndicator {
+  display: inline-flex;
+  color: var(--_swatch---swatch--brand-white);
+}
+
+.checkboxOptionLabel {
+  font-size: var(--_typography---font-size--text-small);
+  font-weight: var(--_typography---font--primary-medium);
+  color: var(--_theme---text-1);
+  cursor: pointer;
+}
+
+/* ── Honeypot (visually hidden, off-screen) ────────────────────────────── */
+
+.honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+  left: -9999px;
+  top: auto;
+}
+
+/* ── Actions / submit ──────────────────────────────────────────────────── */
+
+.requiredNote {
+  margin: 0;
+  font-size: var(--_typography---font-size--text-small);
+  color: var(--_theme---text-2);
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+/* ── Submission status ─────────────────────────────────────────────────── */
+
+.status:empty {
+  display: none;
+}
+
+.statusSuccess,
+.statusError {
+  margin: 0;
+  text-align: center;
+  font-size: var(--_typography---font-size--text-small);
+}
+
+.statusSuccess {
+  color: var(--_swatch---swatch--brand-blue-900);
+}
+
+.statusError {
+  color: var(--form-error);
+}
+
+/* ── Loading / fetch-error states (unique to the data-driven form) ─────── */
+
+.state {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--_spacing---space--6);
+  padding-block: var(--_spacing---space--12);
+  text-align: center;
+}
+
+.stateMessage {
+  margin: 0;
+  font-size: var(--_typography---font-size--text-main);
+  color: var(--_theme---text-2);
+}
+
+.stateError {
+  color: var(--form-error);
+}
+
+/* Accessible loading spinner. */
+.spinner {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: var(--radius--round, 100vw);
+  border: 0.1875rem solid var(--_theme---border-2);
+  border-top-color: var(--_swatch---swatch--brand-blue-600);
+  animation: remoteFormSpin 700ms linear infinite;
+}
+
+@keyframes remoteFormSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner {
+    animation: none;
+  }
+}

@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Webflow CLI credentials
+.env
+.env.*
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

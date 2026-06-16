@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { SearchIcon } from "../NavigationMenu/primitives/icons/SearchIcon"
 import styles from "./styles"
 
@@ -60,6 +61,27 @@ export function Search({
   pill5 = "",
   pill6 = "",
 }: SearchProps) {
+  // Auto-load the global overlay widget once — dropping this component is
+  // enough, no per-page <script> needed. The widget renders the overlay in
+  // document.body and listens for lcl:open-search; LCL_SEARCH_SCOPE sets the
+  // page's default scope. Guarded so multiple instances don't double-load.
+  useEffect(() => {
+    const w = window as unknown as {
+      __lclSearchWidgetLoaded?: boolean
+      LCL_SEARCH_SCOPE?: string
+      LCL_SEARCH_WIDGET_SRC?: string
+    }
+    if (w.__lclSearchWidgetLoaded) return
+    w.__lclSearchWidgetLoaded = true
+    w.LCL_SEARCH_SCOPE = searchScope
+    const s = document.createElement("script")
+    s.src =
+      w.LCL_SEARCH_WIDGET_SRC ??
+      "https://www.entrepreneur.lcl.fr/search-api/search-widget.js"
+    s.async = true
+    document.head.appendChild(s)
+  }, [searchScope])
+
   if (variant === "icon") {
     return (
       <button

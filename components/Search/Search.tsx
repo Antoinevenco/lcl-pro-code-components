@@ -74,10 +74,19 @@ export function Search({
     if (w.__lclSearchWidgetLoaded) return
     w.__lclSearchWidgetLoaded = true
     w.LCL_SEARCH_SCOPE = searchScope
+    // The search-api Worker lives on the Portail site. Target the Portail of the
+    // SAME environment as the current site (preprod↔preprod, prod↔prod).
+    const h = window.location.hostname
+    const base =
+      h === "lclpro.webflow.io"
+        ? "https://portail-entrepreneur.webflow.io" // LCL Pro preprod → Portail preprod
+        : h === "professionnel.lcl.fr" || h === "www.professionnel.lcl.fr"
+          ? "https://www.entrepreneur.lcl.fr" // LCL Pro prod → Portail prod
+          : h === "entrepreneur.lcl.fr" || h === "www.entrepreneur.lcl.fr" || h === "portail-entrepreneur.webflow.io"
+            ? "" // Portail → same-origin
+            : "https://www.entrepreneur.lcl.fr" // default → Portail prod
     const s = document.createElement("script")
-    s.src =
-      w.LCL_SEARCH_WIDGET_SRC ??
-      "https://www.entrepreneur.lcl.fr/search-api/search-widget.js"
+    s.src = w.LCL_SEARCH_WIDGET_SRC ?? `${base}/search-api/search-widget.js`
     s.async = true
     document.head.appendChild(s)
   }, [searchScope])

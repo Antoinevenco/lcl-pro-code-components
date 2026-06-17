@@ -41,11 +41,13 @@ export function openSearch(
 export function ensureSearchWidget(scope: SearchScope) {
   const w = window as unknown as {
     __lclSearchWidgetLoaded?: boolean
+    __lclSearchWidgetLoading?: boolean
     LCL_SEARCH_SCOPE?: string
     LCL_SEARCH_WIDGET_SRC?: string
   }
-  if (w.__lclSearchWidgetLoaded) return
-  w.__lclSearchWidgetLoaded = true
+  // Already loaded, or a load is already in flight: never append twice.
+  if (w.__lclSearchWidgetLoaded || w.__lclSearchWidgetLoading) return
+  w.__lclSearchWidgetLoading = true
   w.LCL_SEARCH_SCOPE = scope
   const h = window.location.hostname
   const base =
@@ -61,5 +63,16 @@ export function ensureSearchWidget(scope: SearchScope) {
   const s = document.createElement("script")
   s.src = w.LCL_SEARCH_WIDGET_SRC ?? `${base}/search-api/search-widget.js`
   s.async = true
+  s.onload = () => {
+    // Only mark "loaded" once the script actually executed.
+    w.__lclSearchWidgetLoaded = true
+    w.__lclSearchWidgetLoading = false
+  }
+  s.onerror = () => {
+    // Load failed: warn and reset both guards so a later trigger can retry.
+    console.warn("[lcl-search] failed to load search widget:", s.src)
+    w.__lclSearchWidgetLoaded = false
+    w.__lclSearchWidgetLoading = false
+  }
   document.head.appendChild(s)
 }

@@ -19,4 +19,12 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Webflow Code Components export a `declareComponent` default alongside the
+    // React component, which legitimately trips react-refresh/only-export-components.
+    files: ['**/*.webflow.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

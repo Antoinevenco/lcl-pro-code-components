@@ -1,5 +1,4 @@
 import type {
-  EngagementCard,
   EspaceClientConfig,
   FeatureCard,
   MenuTree,
@@ -45,35 +44,36 @@ const comptesCards: FeatureCard[] = [
   },
 ]
 
-const pourquoiEngagementCards: EngagementCard[] = [
-  {
-    title: "LCL Partenaire du Tour de France",
-    ctaLabel: "En savoir plus",
-    ctaHref: "#",
-  },
-  {
-    title: "Nos labélisations",
-    ctaLabel: "En savoir plus",
-    ctaHref: "#",
-  },
-]
+// Re-enable alongside the commented-out "Pourquoi LCL ?" menu entry below.
+// const pourquoiEngagementCards: EngagementCard[] = [
+//   {
+//     title: "LCL Partenaire du Tour de France",
+//     ctaLabel: "En savoir plus",
+//     ctaHref: "#",
+//   },
+//   {
+//     title: "Nos labélisations",
+//     ctaLabel: "En savoir plus",
+//     ctaHref: "#",
+//   },
+// ]
 
-const pourquoiFeatureCards: FeatureCard[] = [
-  {
-    title: "Les cahiers de l'energie d'entreprendre",
-    body: "Un ensemble d'actions pensées pour être aux côtés des entrepreneurs au quotidien.",
-    ctaLabel: "Bouton",
-    ctaHref: "#",
-    iconBg: "white",
-  },
-  {
-    title: "Ouvrir un compte",
-    body: "Ouvrez votre compte pro en ligne en moins de 10 minutes ou prenez rendez-vous en agence pour rencontrer l'un de nos conseillers",
-    ctaLabel: "Bouton",
-    ctaHref: "#",
-    iconBg: "white",
-  },
-]
+// const pourquoiFeatureCards: FeatureCard[] = [
+//   {
+//     title: "Les cahiers de l'energie d'entreprendre",
+//     body: "Un ensemble d'actions pensées pour être aux côtés des entrepreneurs au quotidien.",
+//     ctaLabel: "Bouton",
+//     ctaHref: "#",
+//     iconBg: "white",
+//   },
+//   {
+//     title: "Ouvrir un compte",
+//     body: "Ouvrez votre compte pro en ligne en moins de 10 minutes ou prenez rendez-vous en agence pour rencontrer l'un de nos conseillers",
+//     ctaLabel: "Bouton",
+//     ctaHref: "#",
+//     iconBg: "white",
+//   },
+// ]
 
 const savoirFaireEssentielsCards: FeatureCard[] = [
   {

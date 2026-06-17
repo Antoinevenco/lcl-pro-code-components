@@ -22,9 +22,8 @@ type WebflowProps = {
 
 // This file pairs a wrapper component with a `declareComponent(...)` default
 // export (the Webflow binding), so the file legitimately has a non-component
-// export. Fast Refresh doesn't apply to the Webflow build, so silence the rule
-// here (the existing *.webflow.tsx files predate this and trip the same rule).
-// eslint-disable-next-line react-refresh/only-export-components
+// export. react-refresh/only-export-components is disabled for *.webflow.tsx
+// in eslint.config.js (Fast Refresh doesn't apply to the Webflow build).
 function SearchWebflow({
   searchScope,
   variant,

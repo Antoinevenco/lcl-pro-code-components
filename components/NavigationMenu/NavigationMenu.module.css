@@ -268,7 +268,6 @@
   background: var(--_swatch---swatch--brand-white);
   color: var(--nav-muted-color);
   font-size: var(--_typography---font-size--text-small);
-  cursor: pointer;
 }
 .search input {
   flex: 1;
@@ -279,7 +278,6 @@
   background: transparent;
   font: inherit;
   color: inherit;
-  cursor: pointer;
 }
 .search input::placeholder {
   color: var(--nav-muted-color);

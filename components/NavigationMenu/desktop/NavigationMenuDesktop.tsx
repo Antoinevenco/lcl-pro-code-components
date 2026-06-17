@@ -32,7 +32,6 @@ export function NavigationMenuDesktop({
   ctaLabel,
   ctaHref,
   showSearch,
-  variant,
   logoHref,
   espace,
   onMenuOpenChange,
@@ -162,27 +161,10 @@ export function NavigationMenuDesktop({
         </NavMenu.List>
 
         <div className={styles.barTools}>
-          {showSearch && variant === "wide" ? (
-            // The bar is a trigger, not a real field — it opens the overlay
-            // (where the user actually types). readOnly keeps the exact look
-            // while routing click/Enter to the shared search widget.
-            <label className={styles.search}>
-              <SearchIcon />
-              <input
-                type="search"
-                placeholder="Rechercher"
-                aria-label="Rechercher"
-                readOnly
-                onClick={() => openSearch("", "nav", "lclpro")}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault()
-                    openSearch("", "nav", "lclpro")
-                  }
-                }}
-              />
-            </label>
-          ) : showSearch ? (
+          {showSearch ? (
+            // Always the loupe icon button (never the search bar): the overlay
+            // IS the search field, so the trigger stays a compact button at
+            // every width. Dispatches lcl:open-search to the shared widget.
             <button
               type="button"
               className={styles.iconButton}

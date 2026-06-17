@@ -1,27 +1,20 @@
 import { useEffect } from "react"
 import { SearchIcon } from "../NavigationMenu/primitives/icons/SearchIcon"
+import { ensureSearchWidget, openSearch } from "./bridge"
+import type { SearchScope } from "./bridge"
 import styles from "./styles"
 
 /**
  * LCL Search — pure React component (zero `@webflow` imports).
  *
- * A thin search *trigger*. It does NOT implement the overlay; instead it
- * dispatches a window-level CustomEvent that the global `search-widget.js`
- * (deployed separately on professionnel.lcl.fr) listens for and turns into the
- * actual search overlay. Window events traverse Shadow DOM boundaries, which
- * makes them the right cross-component channel for Webflow code components.
- *
- * The event contract is `lcl:open-search` with
- * `detail: { query, source, scope }`:
- *   - `query`  — "" for the bar/icon, or the pill label for a pill click.
- *   - `source` — trigger origin: "icon" | "hero-bar" | "hero-pill" (and "nav"
- *                from the navigation search control, dispatched elsewhere).
- *   - `scope`  — "portail" | "lclpro"; the discriminator the widget uses to
- *                pick the backend (`&site=<scope>`). Kept SEPARATE from
- *                `source` on purpose.
+ * A thin search *trigger*. It does NOT implement the overlay; it dispatches the
+ * `lcl:open-search` window event (via ./bridge) that the global
+ * `search-widget.js` turns into the actual overlay, and auto-loads that widget
+ * on mount. The same bridge backs the navigation search control, so the event
+ * contract and the env-aware widget URL live in one place.
  */
 
-export type SearchScope = "portail" | "lclpro"
+export type { SearchScope }
 export type SearchVariant = "hero" | "icon"
 
 export type SearchProps = {
@@ -39,17 +32,6 @@ export type SearchProps = {
   pill6?: string
 }
 
-/** Trigger origin reported to the widget — distinct from `scope`. */
-type SearchSource = "icon" | "hero-bar" | "hero-pill"
-
-function dispatchOpen(query: string, source: SearchSource, scope: SearchScope) {
-  window.dispatchEvent(
-    new CustomEvent("lcl:open-search", {
-      detail: { query, source, scope },
-    }),
-  )
-}
-
 export function Search({
   searchScope = "lclpro",
   variant = "icon",
@@ -62,33 +44,10 @@ export function Search({
   pill6 = "",
 }: SearchProps) {
   // Auto-load the global overlay widget once — dropping this component is
-  // enough, no per-page <script> needed. The widget renders the overlay in
-  // document.body and listens for lcl:open-search; LCL_SEARCH_SCOPE sets the
-  // page's default scope. Guarded so multiple instances don't double-load.
+  // enough, no per-page <script> needed (guarded against double-load inside
+  // ensureSearchWidget). LCL_SEARCH_SCOPE sets the page's default scope.
   useEffect(() => {
-    const w = window as unknown as {
-      __lclSearchWidgetLoaded?: boolean
-      LCL_SEARCH_SCOPE?: string
-      LCL_SEARCH_WIDGET_SRC?: string
-    }
-    if (w.__lclSearchWidgetLoaded) return
-    w.__lclSearchWidgetLoaded = true
-    w.LCL_SEARCH_SCOPE = searchScope
-    // The search-api Worker lives on the Portail site. Target the Portail of the
-    // SAME environment as the current site (preprod↔preprod, prod↔prod).
-    const h = window.location.hostname
-    const base =
-      h === "lclpro.webflow.io"
-        ? "https://portail-entrepreneur.webflow.io" // LCL Pro preprod → Portail preprod
-        : h === "professionnel.lcl.fr" || h === "www.professionnel.lcl.fr"
-          ? "https://www.entrepreneur.lcl.fr" // LCL Pro prod → Portail prod
-          : h === "entrepreneur.lcl.fr" || h === "www.entrepreneur.lcl.fr" || h === "portail-entrepreneur.webflow.io"
-            ? "" // Portail → same-origin
-            : "https://www.entrepreneur.lcl.fr" // default → Portail prod
-    const s = document.createElement("script")
-    s.src = w.LCL_SEARCH_WIDGET_SRC ?? `${base}/search-api/search-widget.js`
-    s.async = true
-    document.head.appendChild(s)
+    ensureSearchWidget(searchScope)
   }, [searchScope])
 
   if (variant === "icon") {
@@ -97,7 +56,7 @@ export function Search({
         type="button"
         className={styles.iconButton}
         aria-label="Ouvrir la recherche"
-        onClick={() => dispatchOpen("", "icon", searchScope)}
+        onClick={() => openSearch("", "icon", searchScope)}
       >
         <SearchIcon title="Rechercher" />
       </button>
@@ -116,11 +75,11 @@ export function Search({
           tabIndex={0}
           className={styles.heroBar}
           aria-label="Ouvrir la recherche"
-          onClick={() => dispatchOpen("", "hero-bar", searchScope)}
+          onClick={() => openSearch("", "hero-bar", searchScope)}
           onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault()
-              dispatchOpen("", "hero-bar", searchScope)
+              openSearch("", "hero-bar", searchScope)
             }
           }}
         >
@@ -135,7 +94,7 @@ export function Search({
                 key={`${i}-${label}`}
                 type="button"
                 className={styles.pill}
-                onClick={() => dispatchOpen(label, "hero-pill", searchScope)}
+                onClick={() => openSearch(label, "hero-pill", searchScope)}
               >
                 {label}
               </button>

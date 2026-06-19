@@ -9,6 +9,10 @@ export interface CardDef {
   network: string
   /** Tier label printed on the chip (e.g. "BUSINESS", "EXCELLENCE"). */
   tier: string
+  /** Optional per-card caveat shown above this card's column AND inside its
+   *  mobile card (e.g. Platinum's "Uniquement disponible avec un compte L by LCL").
+   *  Travels with the card, so it follows reorders and hides with the column. */
+  note?: string
 }
 
 export interface CardValue {

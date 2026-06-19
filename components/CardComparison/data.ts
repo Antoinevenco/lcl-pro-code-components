@@ -10,7 +10,13 @@ export const CARD_COMPARISON_DATA: CardComparisonData = {
     { name: "Carte Visa\nBusiness", theme: "business", network: "VISA", tier: "BUSINESS" },
     { name: "Carte Visa\nGold Business", theme: "gold", network: "VISA", tier: "Gold BUSINESS" },
     { name: "Carte\nLCL Excellence", theme: "excellence", network: "Mastercard", tier: "EXCELLENCE" },
-    { name: "Carte\nL by LCL Platinum", theme: "platinum", network: "", tier: "PLATINUM" },
+    {
+      name: "Carte\nL by LCL Platinum",
+      theme: "platinum",
+      network: "",
+      tier: "PLATINUM",
+      note: "Uniquement disponible avec un compte L by LCL",
+    },
   ],
   rows: [
     {

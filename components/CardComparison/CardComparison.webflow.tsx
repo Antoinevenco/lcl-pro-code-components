@@ -11,7 +11,6 @@ type WebflowProps = {
   rdvUrl: { href: string; target?: string }
   rdvLabel: string
   sectionTitle: string
-  availabilityNote: string
   hideCard1: boolean
   hideCard2: boolean
   hideCard3: boolean
@@ -22,7 +21,6 @@ function CardComparisonWebflow({
   rdvUrl,
   rdvLabel,
   sectionTitle,
-  availabilityNote,
   hideCard1,
   hideCard2,
   hideCard3,
@@ -33,7 +31,6 @@ function CardComparisonWebflow({
       rdvUrl={rdvUrl?.href ?? "#"}
       rdvLabel={rdvLabel}
       sectionTitle={sectionTitle}
-      availabilityNote={availabilityNote}
       hiddenColumns={[hideCard1, hideCard2, hideCard3, hideCard4]}
     />
   )
@@ -48,10 +45,6 @@ export default declareComponent(CardComparisonWebflow, {
     rdvUrl: props.Link({ name: "Lien Prendre rendez-vous" }),
     rdvLabel: props.Text({ name: "Libellé bouton", defaultValue: "Prendre rendez-vous" }),
     sectionTitle: props.Text({ name: "Titre de section", defaultValue: "Compte pro et cartes" }),
-    availabilityNote: props.Text({
-      name: "Note de disponibilité",
-      defaultValue: "Uniquement disponible avec un compte L by LCL",
-    }),
     hideCard1: props.Boolean({ name: "Cacher carte 1", defaultValue: false }),
     hideCard2: props.Boolean({ name: "Cacher carte 2", defaultValue: false }),
     hideCard3: props.Boolean({ name: "Cacher carte 3", defaultValue: false }),

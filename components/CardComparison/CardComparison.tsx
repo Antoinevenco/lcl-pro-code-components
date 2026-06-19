@@ -23,8 +23,6 @@ export interface CardComparisonProps {
   rdvUrl?: string
   rdvLabel?: string
   sectionTitle?: string
-  /** Small grey note shown on the right of the section bar. */
-  availabilityNote?: string
   data?: CardComparisonData
   /** Per-column visibility — hiddenColumns[i] === true hides card column i. */
   hiddenColumns?: boolean[]
@@ -76,7 +74,6 @@ export function CardComparison({
   rdvUrl = "#",
   rdvLabel = "Prendre rendez-vous",
   sectionTitle = "Compte pro et cartes",
-  availabilityNote = "Uniquement disponible avec un compte L by LCL",
   data = CARD_COMPARISON_DATA,
   hiddenColumns = [],
 }: CardComparisonProps) {
@@ -100,6 +97,23 @@ export function CardComparison({
   const [index, setIndex] = useState(0)
   const maxIndex = Math.max(0, cards.length - CARDS_VISIBLE)
   const clampedIndex = Math.min(index, maxIndex)
+
+  // Floating bottom nav uses position:fixed (robust vs an ancestor overflow that
+  // silently disables position:sticky in some host sections); show it only while
+  // the mobile carousel is on screen. Mobile-only since it lives in .mobileView.
+  const mobileRef = useRef<HTMLDivElement>(null)
+  const [navInView, setNavInView] = useState(false)
+
+  useEffect(() => {
+    const el = mobileRef.current
+    if (!el || typeof IntersectionObserver === "undefined") return
+    const io = new IntersectionObserver(
+      ([entry]) => setNavInView(entry.isIntersecting),
+      { threshold: 0 },
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
 
   useEffect(() => {
     const measure = () => {
@@ -157,8 +171,12 @@ export function CardComparison({
 
         <div className={styles.table} role="table" aria-label={sectionTitle}>
           <div className={styles.sectionBar}>
-            {sectionHeader}
-            {availabilityNote ? <span className={styles.note}>{availabilityNote}</span> : null}
+            <div className={styles.sectionTitleCell}>{sectionHeader}</div>
+            {cards.map((card, i) => (
+              <div className={styles.noteCell} key={i}>
+                {card.note ? <span className={styles.note}>{card.note}</span> : null}
+              </div>
+            ))}
           </div>
 
           {rows.map((row, ri) => (
@@ -178,11 +196,8 @@ export function CardComparison({
       </div>
 
       {/* ---------- Mobile ---------- */}
-      <div className={styles.mobileView}>
-        <div className={styles.mobileHead}>
-          {sectionHeader}
-          {availabilityNote ? <p className={styles.note}>{availabilityNote}</p> : null}
-        </div>
+      <div className={styles.mobileView} ref={mobileRef}>
+        <div className={styles.mobileHead}>{sectionHeader}</div>
 
         <div className={styles.viewport} ref={viewportRef}>
           <motion.div
@@ -202,6 +217,7 @@ export function CardComparison({
                   <a className={styles.rdvBtn} href={rdvUrl} draggable={false}>
                     {rdvLabel}
                   </a>
+                  {card.note ? <span className={styles.mCardNote}>{card.note}</span> : null}
                 </div>
                 {rows.map((row, ri) => {
                   const v = row.values[ci]
@@ -221,7 +237,7 @@ export function CardComparison({
           </motion.div>
         </div>
 
-        <div className={styles.mNav}>
+        <div className={`${styles.mNav} ${navInView ? "" : styles.mNavHidden}`}>
           <button
             type="button"
             className={styles.navArrow}

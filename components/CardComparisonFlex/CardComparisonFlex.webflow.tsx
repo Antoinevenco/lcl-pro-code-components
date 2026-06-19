@@ -7,12 +7,13 @@ import { SEED_CONTENT } from "./content"
  * Webflow binding for the dynamic comparison component.
  *
  * colCount/rowCount are clamped Number props (the source of truth for grid
- * dimensions). `contentData` is a multiline TextNode holding JSON or the
- * delimited format (TextNode is the only string prop that supports multiline;
- * props.Text has no multiline option). We read interactivity via
- * useWebflowContext() (interactive === false on the canvas) and forward it as
- * `editorMode` so the authoring-warning banner shows only while editing, never
- * on preview/publish. props.Link is unwrapped to its href, like V1.
+ * dimensions). `contentData` is a props.Text holding JSON (or the delimited
+ * format). NB: props.TextNode would crash here — it is delivered as a ReactNode,
+ * not a string, so parsing it throws ("Something went wrong"). props.Text is the
+ * string-valued prop. We read interactivity via useWebflowContext() (guarded;
+ * interactive === false on the canvas) and forward it as `editorMode` so the
+ * authoring-warning banner shows only while editing, never on preview/publish.
+ * props.Link is unwrapped to its href, like V1.
  */
 type WebflowProps = {
   colCount: number
@@ -31,7 +32,8 @@ function CardComparisonFlexWebflow({
   rdvLabel,
   rdvUrl,
 }: WebflowProps) {
-  const { interactive } = useWebflowContext()
+  const ctx = useWebflowContext()
+  const editorMode = !(ctx?.interactive ?? true)
   return (
     <CardComparisonFlex
       colCount={colCount}
@@ -40,7 +42,7 @@ function CardComparisonFlexWebflow({
       sectionTitle={sectionTitle}
       rdvLabel={rdvLabel}
       rdvUrl={rdvUrl?.href ?? "#"}
-      editorMode={!interactive}
+      editorMode={editorMode}
     />
   )
 }
@@ -65,9 +67,8 @@ export default declareComponent(CardComparisonFlexWebflow, {
       max: 30,
       decimals: 0,
     }),
-    contentData: props.TextNode({
-      name: "Données — JSON ou texte délimité (| par cellule, // pour sous-ligne)",
-      multiline: true,
+    contentData: props.Text({
+      name: "Données (JSON sur une ligne, ou texte délimité)",
       defaultValue: SEED_CONTENT,
     }),
     sectionTitle: props.Text({ name: "Titre de section", defaultValue: "Compte pro et cartes" }),

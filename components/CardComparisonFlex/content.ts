@@ -23,9 +23,11 @@ import { CARD_COMPARISON_DATA } from "../CardComparison/data"
  * to the seed and reports an error string for the editor-only banner.
  */
 
-/** Seed = V1's baked data, so the default render is identical to V1. */
+/** Seed = V1's baked data, so the default render is identical to V1.
+ *  Single-line JSON: props.Text in the Webflow panel may collapse newlines, so
+ *  a minified default is robust there (the parser still accepts pretty JSON). */
 export const SEED_DATA: CardComparisonData = CARD_COMPARISON_DATA
-export const SEED_CONTENT: string = JSON.stringify(CARD_COMPARISON_DATA, null, 2)
+export const SEED_CONTENT: string = JSON.stringify(CARD_COMPARISON_DATA)
 
 const THEMES: CardTheme[] = ["business", "gold", "excellence", "platinum"]
 const themeForIndex = (i: number): CardTheme => THEMES[i % THEMES.length]
@@ -118,9 +120,11 @@ function parseDelimited(raw: string): { cards: CardDef[]; rows: { label: string;
   return { cards, rows }
 }
 
-export function parseContent(raw: string, colCount: number, rowCount: number): ParseResult {
+export function parseContent(raw: unknown, colCount: number, rowCount: number): ParseResult {
   const warnings: string[] = []
-  const trimmed = (raw ?? "").trim()
+  // Coerce to string defensively: some Webflow prop types deliver a non-string
+  // (e.g. a ReactNode), which would throw on .trim().
+  const trimmed = String(raw ?? "").trim()
 
   // Empty → seed (default render = V1).
   if (!trimmed) {

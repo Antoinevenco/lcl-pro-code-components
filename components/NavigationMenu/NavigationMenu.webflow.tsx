@@ -59,11 +59,9 @@ function NavigationMenuWebflow({
         // PropTypesWithoutDefaultValue), so fall back to the real LCL URL the
         // label already defaults to — never "#", which would override the
         // defaultEspaceClient href on every render until a designer sets it.
-        // Use `||` not `??`: a touched-but-empty Webflow Link control passes
-        // { href: "" } (not nullish), which `??` would keep as href="".
-        proHref: espaceProHref?.href || defaultEspaceClient.proHref,
+        proHref: espaceProHref?.href ?? defaultEspaceClient.proHref,
         comptesLabel: espaceComptesLabel,
-        comptesHref: espaceComptesHref?.href || defaultEspaceClient.comptesHref,
+        comptesHref: espaceComptesHref?.href ?? defaultEspaceClient.comptesHref,
       }}
       asideSlots={{
         "Comptes et Opérations": asideComptes,

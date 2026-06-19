@@ -1,0 +1,400 @@
+/* =========================================================================
+ * CardComparison — token-driven, faithful to the LCL card comparison design.
+ * Tokens come from /reference code/variables.css (bundled globally on the
+ * published site); each has a hard fallback so the component renders correctly
+ * even where a token is missing (e.g. the local demo before the CSS loads).
+ * Desktop = aligned CSS grid. Mobile = horizontal scroll-snap carousel (2 cards
+ * visible, label above each value). Rows use display:contents wrappers so they
+ * keep grid alignment AND a role="row" for assistive tech.
+ * ========================================================================= */
+
+.root {
+  --cc-text: var(--_swatch---swatch--brand-text, #393939);
+  --cc-muted: var(--_swatch---swatch--brand-text-o60, #6b6b6b);
+  --cc-blue: var(--_swatch---swatch--brand-blue-600, #3b51d5);
+  --cc-blue-dark: var(--_swatch---swatch--brand-blue-900, #1f368b);
+  --cc-bg: var(--_swatch---swatch--brand-blue-100, #eef1fc);
+  --cc-white: var(--_swatch---swatch--brand-white, #fff);
+  --cc-border: var(--_swatch---swatch--brand-neutral-200, #e7e7e7);
+
+  box-sizing: border-box;
+  width: 100%;
+  background: var(--cc-bg);
+  border-radius: 24px;
+  padding: clamp(16px, 3vw, 32px);
+  color: var(--cc-text);
+  font-family: var(--_typography---font--primary-family, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- mini card chip (CSS-drawn, evokes the real cards) ---------- */
+.chip {
+  width: 74px;
+  height: 46px;
+  border-radius: 6px;
+  padding: 6px 7px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(20, 33, 74, 0.18);
+  overflow: hidden;
+}
+.chipTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+}
+.chipEmv {
+  width: 11px;
+  height: 8px;
+  border-radius: 2px;
+  background: linear-gradient(135deg, #f4d97a, #c9a233);
+  flex-shrink: 0;
+}
+.chipTier {
+  font-size: 6.5px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+.chipNet {
+  align-self: flex-end;
+  font-size: 8px;
+  font-weight: 800;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+.chip[data-theme="business"] {
+  background: linear-gradient(135deg, #e1571f, #c5421a);
+  color: #fff;
+}
+.chip[data-theme="gold"] {
+  background: linear-gradient(135deg, #ddc88c, #bda05f);
+  color: #3a3320;
+}
+.chip[data-theme="gold"] .chipEmv {
+  background: linear-gradient(135deg, #fff2c2, #d9b865);
+}
+.chip[data-theme="excellence"] {
+  background: linear-gradient(135deg, #232323, #050505);
+  color: #fff;
+}
+.chip[data-theme="platinum"] {
+  background: linear-gradient(135deg, #c2c6cb, #969ba1);
+  color: #2a2d31;
+}
+
+/* ---------- RDV button (outline pill) ---------- */
+.rdvBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 9px 14px;
+  border: 1.5px solid var(--cc-blue);
+  border-radius: 100vw;
+  background: var(--cc-white);
+  color: var(--cc-blue);
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.rdvBtn:hover,
+.rdvBtn:focus-visible {
+  background: var(--cc-blue);
+  color: var(--cc-white);
+  outline: none;
+}
+
+/* ---------- card name ---------- */
+.cardName {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.25;
+  white-space: pre-line;
+  text-align: center;
+}
+
+/* =========================================================================
+ * DESKTOP — aligned grid
+ * ========================================================================= */
+.desktopView {
+  display: block;
+}
+
+.cardsHeader {
+  display: grid;
+  grid-template-columns: var(--cc-grid);
+  align-items: end;
+  margin-bottom: 14px;
+}
+.cardBox {
+  margin-inline: 7px;
+  background: var(--cc-white);
+  border-radius: 16px;
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 13px;
+  box-shadow: 0 1px 2px rgba(20, 33, 74, 0.04);
+}
+
+.table {
+  display: grid;
+  grid-template-columns: var(--cc-grid);
+  background: var(--cc-white);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(20, 33, 74, 0.04);
+}
+
+.sectionBar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--cc-border);
+}
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--cc-text);
+}
+.sectionIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--cc-blue);
+  color: var(--cc-white);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.note {
+  color: var(--cc-muted);
+  font-size: 0.82rem;
+  line-height: 1.35;
+  text-align: right;
+  max-width: 240px;
+}
+
+/* rows: wrapper is display:contents → cells become direct grid items */
+.rowGroup {
+  display: contents;
+}
+.rowLabel {
+  display: flex;
+  align-items: center;
+  padding: 18px 22px;
+  color: var(--cc-muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  border-bottom: 1px solid var(--cc-border);
+}
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 18px 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--cc-border);
+}
+.rowGroup:last-child .rowLabel,
+.rowGroup:last-child .cell {
+  border-bottom: none;
+}
+.cellMain {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+}
+.cellSub {
+  color: var(--cc-muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  font-weight: 400;
+}
+.valNone {
+  color: var(--cc-muted);
+  font-weight: 400;
+}
+.valIncluded {
+  color: var(--cc-text);
+  font-weight: 600;
+}
+
+/* =========================================================================
+ * MOBILE — scroll-snap carousel (2 cards visible, label above each value)
+ * ========================================================================= */
+.mobileView {
+  display: none;
+}
+.mobileHead {
+  margin-bottom: 14px;
+}
+.mobileHead .sectionTitle {
+  margin-bottom: 8px;
+}
+.mobileHead .note {
+  text-align: left;
+  max-width: none;
+}
+
+.viewport {
+  overflow: hidden;
+}
+.track {
+  display: flex;
+  gap: 12px;
+  cursor: grab;
+  /* let vertical page scroll pass through; framer handles the horizontal drag */
+  touch-action: pan-y;
+  user-select: none;
+}
+.track:active {
+  cursor: grabbing;
+}
+.mCard {
+  flex: 0 0 calc(50% - 6px);
+  min-width: 0;
+  background: var(--cc-white);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: 0 1px 2px rgba(20, 33, 74, 0.05);
+}
+.mCardHead {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--cc-border);
+}
+.mRow {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cc-border);
+}
+.mRow:last-child {
+  border-bottom: none;
+}
+.mLabel {
+  color: var(--cc-muted);
+  font-size: 0.72rem;
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+.mVal {
+  font-weight: 600;
+  font-size: 0.88rem;
+  line-height: 1.3;
+}
+.mSub {
+  display: block;
+  color: var(--cc-muted);
+  font-size: 0.72rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-top: 2px;
+}
+
+/* Sticky bottom control bar — keeps the prev/next arrows + dots reachable while
+ * the tall card columns scroll, and signals that cards can be switched. */
+.mNav {
+  position: sticky;
+  bottom: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: fit-content;
+  margin: 16px auto 0;
+  padding: 7px 12px;
+  background: rgba(255, 255, 255, 0.92);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--cc-border);
+  border-radius: 100vw;
+  box-shadow: 0 4px 18px rgba(20, 33, 74, 0.14);
+}
+.navArrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--cc-blue);
+  background: var(--cc-white);
+  color: var(--cc-blue);
+  padding: 0;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease, opacity 0.15s ease;
+}
+.navArrow:hover:not(:disabled),
+.navArrow:focus-visible:not(:disabled) {
+  background: var(--cc-blue);
+  color: var(--cc-white);
+  outline: none;
+}
+.navArrow:disabled {
+  opacity: 0.4;
+  cursor: default;
+  border-color: var(--cc-border);
+  color: var(--cc-muted);
+}
+.navArrow svg {
+  width: 18px;
+  height: 18px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--cc-border);
+  cursor: pointer;
+  transition: background 0.15s ease, width 0.15s ease;
+}
+.dotActive {
+  background: var(--cc-blue);
+  width: 22px;
+  border-radius: 5px;
+}
+
+@media (max-width: 860px) {
+  .desktopView {
+    display: none;
+  }
+  .mobileView {
+    display: block;
+  }
+}

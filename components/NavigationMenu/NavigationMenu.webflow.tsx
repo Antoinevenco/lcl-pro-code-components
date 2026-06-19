@@ -8,6 +8,17 @@ import {
   topBarLinks as defaultTopBarLinks,
 } from "./data/menu"
 
+/**
+ * An untouched Webflow `props.Link` doesn't arrive as `undefined` — Webflow
+ * seeds it with `{ href: "#" }`. `"#"` is truthy, so neither `??` nor `||`
+ * falls through to a default; the link renders as a dead `#`. Treat `"#"`,
+ * empty, and whitespace-only hrefs as "unset" so the real default wins.
+ */
+function linkHref(link: { href?: string } | undefined, fallback: string) {
+  const href = link?.href?.trim()
+  return href && href !== "#" ? href : fallback
+}
+
 type WebflowProps = {
   logoHref: { href: string; target?: string }
   ctaLabel: string
@@ -57,13 +68,11 @@ function NavigationMenuWebflow({
         proLabel: espaceProLabel,
         // props.Link can't carry a defaultValue (Link is in
         // PropTypesWithoutDefaultValue), so fall back to the real LCL URL the
-        // label already defaults to — never "#", which would override the
-        // defaultEspaceClient href on every render until a designer sets it.
-        // Use `||` not `??`: a touched-but-empty Webflow Link control passes
-        // { href: "" } (not nullish), which `??` would keep as href="".
-        proHref: espaceProHref?.href || defaultEspaceClient.proHref,
+        // label already defaults to. linkHref() treats Webflow's untouched-link
+        // sentinel ("#") and empty values as unset so the default wins.
+        proHref: linkHref(espaceProHref, defaultEspaceClient.proHref),
         comptesLabel: espaceComptesLabel,
-        comptesHref: espaceComptesHref?.href || defaultEspaceClient.comptesHref,
+        comptesHref: linkHref(espaceComptesHref, defaultEspaceClient.comptesHref),
       }}
       asideSlots={{
         "Comptes et Opérations": asideComptes,

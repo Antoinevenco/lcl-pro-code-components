@@ -4,6 +4,7 @@ import "./App.css"
 import NavigationMenu from "../components/NavigationMenu/NavigationMenu"
 import Form from "../components/Form/Form"
 import OfferFilter from "../components/OfferFilter/OfferFilter"
+import RotatingHeadline from "../components/RotatingHeadline/RotatingHeadline"
 
 /**
  * Mock comparison table + cards used to validate OfferFilter's outside-DOM
@@ -63,6 +64,12 @@ function App() {
   return (
     <div className="page">
       <NavigationMenu ctaLabel="Ouvrir un compte" ctaHref="#" showSearch />
+      <section style={{ maxWidth: "60rem", margin: "0 auto", padding: "3rem 1rem" }}>
+        <RotatingHeadline
+          text="la banque de tous les"
+          values="entrepreneurs, pro, entrepreneuses, artisans, freelances"
+        />
+      </section>
       <OfferFilterHarness />
       <div style={{ maxWidth: "60rem", margin: "0 auto", padding: "2rem 1rem" }}>
         <Form onSubmit={(values) => console.log("Form submitted:", values)} />

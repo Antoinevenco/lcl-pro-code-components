@@ -8,6 +8,15 @@ import { defaultEspaceClient } from "../data/menu"
  * modal ships as part of the Navigation Menu — this binding exists so the
  * primitive can be exposed on its own later without restructuring.
  */
+/**
+ * An untouched Webflow `props.Link` arrives as `{ href: "#" }`, not undefined,
+ * so `??`/`||` never fall through. Treat "#"/empty as unset.
+ */
+function linkHref(link: { href?: string } | undefined, fallback: string) {
+  const href = link?.href?.trim()
+  return href && href !== "#" ? href : fallback
+}
+
 type WebflowProps = {
   title: string
   heading: string
@@ -32,9 +41,9 @@ function EspaceClientModalWebflow({
         title,
         heading,
         proLabel,
-        proHref: proHref?.href ?? "#",
+        proHref: linkHref(proHref, defaultEspaceClient.proHref),
         comptesLabel,
-        comptesHref: comptesHref?.href ?? "#",
+        comptesHref: linkHref(comptesHref, defaultEspaceClient.comptesHref),
       }}
     />
   )

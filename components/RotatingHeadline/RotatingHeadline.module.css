@@ -1,0 +1,91 @@
+/* =========================================================================
+ * RotatingHeadline — token-driven styles
+ * Typography comes from the global `u-text-style-h1` utility (font, size,
+ * line-height, weight, letter-spacing — all Webflow tokens). This module only
+ * owns layout + the in/out motion, which have no Webflow var equivalent.
+ * The only raw values are motion durations/transforms, which §1 of CLAUDE.md
+ * explicitly allows as a Tailwind/raw fallback.
+ * ========================================================================= */
+
+.root,
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+/* The line itself. We keep the `u-text-style-h1` class on the element (so it
+   stays in sync with any future Webflow retune of that utility), but we also
+   set the resolved typography here from the same tokens. That makes the
+   component self-contained: it renders correctly even where the global
+   `.u-text-style-h1` rule isn't loaded (e.g. the local Vite preview, which only
+   imports variables.css), and it doesn't depend on cascade order vs style.css. */
+.root {
+  /* Token aliases mirror the `u-text-style-h1` definition verbatim. */
+  --_text-style---font-family: var(--_typography---font--heading-family);
+  --_text-style---font-size: var(--_typography---font-size--h1);
+  --_text-style---line-height: var(--_typography---line-height--medium);
+  --_text-style---font-weight: var(--_typography---font--primary-bold);
+  --_text-style---letter-spacing: var(--_typography---letter-spacing--tight);
+  --_text-style---margin-bottom: var(--_spacing---space--11);
+  --_text-style---text-wrap: balance;
+  --_text-style---margin-top: var(--_spacing---space--13);
+  --_text-style---text-transform: var(--_typography---text-transform--none);
+  --_text-style---trim-top: var(--_typography---font--primary-trim-top);
+  --_text-style---trim-bottom: var(--_typography---font--primary-trim-bottom);
+
+  /* Lead / static part. */
+  color: var(--_theme---text-heading-1);
+  font-family: var(--_text-style---font-family);
+  font-size: var(--_text-style---font-size);
+  line-height: var(--_text-style---line-height);
+  font-weight: var(--_text-style---font-weight);
+  letter-spacing: var(--_text-style---letter-spacing);
+  text-transform: var(--_text-style---text-transform, none);
+  text-wrap: var(--_text-style---text-wrap);
+}
+
+.lead {
+  /* Static "fix" part — inherits the heading-1 color set on .root. */
+  color: var(--_theme---text-heading-1);
+}
+
+/* Rotating word area. Sized by the invisible sizer so the box never collapses
+   or shifts as words swap; the animated words sit on top of it. */
+.rotator {
+  position: relative;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* Invisible placeholder that reserves width + height for the current word so
+   the surrounding text and the line box stay put (no layout shift). */
+.sizer {
+  visibility: hidden;
+  white-space: nowrap;
+}
+
+/* Holds the animated words, overlaid on the sizer and clipped to its box. */
+.live {
+  position: absolute;
+  inset: 0;
+}
+
+/* Each word is absolutely positioned so the entering and outgoing words stack
+   and cross-fade in the same spot. */
+.word {
+  position: absolute;
+  inset: 0;
+  display: inline-block;
+  white-space: nowrap;
+  /* Rotating word uses the secondary heading color to set it apart from the
+     static lead (which is heading-1). */
+  color: var(--_theme---text-heading-2);
+  will-change: transform, opacity;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word {
+    will-change: auto;
+  }
+}

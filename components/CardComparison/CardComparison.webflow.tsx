@@ -12,6 +12,10 @@ type WebflowProps = {
   rdvLabel: string
   sectionTitle: string
   availabilityNote: string
+  hideCard1: boolean
+  hideCard2: boolean
+  hideCard3: boolean
+  hideCard4: boolean
 }
 
 function CardComparisonWebflow({
@@ -19,6 +23,10 @@ function CardComparisonWebflow({
   rdvLabel,
   sectionTitle,
   availabilityNote,
+  hideCard1,
+  hideCard2,
+  hideCard3,
+  hideCard4,
 }: WebflowProps) {
   return (
     <CardComparison
@@ -26,6 +34,7 @@ function CardComparisonWebflow({
       rdvLabel={rdvLabel}
       sectionTitle={sectionTitle}
       availabilityNote={availabilityNote}
+      hiddenColumns={[hideCard1, hideCard2, hideCard3, hideCard4]}
     />
   )
 }
@@ -43,5 +52,9 @@ export default declareComponent(CardComparisonWebflow, {
       name: "Note de disponibilité",
       defaultValue: "Uniquement disponible avec un compte L by LCL",
     }),
+    hideCard1: props.Boolean({ name: "Cacher carte 1", defaultValue: false }),
+    hideCard2: props.Boolean({ name: "Cacher carte 2", defaultValue: false }),
+    hideCard3: props.Boolean({ name: "Cacher carte 3", defaultValue: false }),
+    hideCard4: props.Boolean({ name: "Cacher carte 4", defaultValue: false }),
   },
 })

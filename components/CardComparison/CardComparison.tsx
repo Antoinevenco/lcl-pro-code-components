@@ -26,6 +26,8 @@ export interface CardComparisonProps {
   /** Small grey note shown on the right of the section bar. */
   availabilityNote?: string
   data?: CardComparisonData
+  /** Per-column visibility — hiddenColumns[i] === true hides card column i. */
+  hiddenColumns?: boolean[]
 }
 
 function valClass(text: string): string {
@@ -76,8 +78,16 @@ export function CardComparison({
   sectionTitle = "Compte pro et cartes",
   availabilityNote = "Uniquement disponible avec un compte L by LCL",
   data = CARD_COMPARISON_DATA,
+  hiddenColumns = [],
 }: CardComparisonProps) {
-  const { cards, rows } = data
+  // Drop hidden columns from the card list AND every row's values, so the
+  // desktop grid and the mobile carousel adapt to the visible count for free.
+  const visibleIdx = data.cards.map((_, i) => i).filter((i) => !hiddenColumns[i])
+  const cards = visibleIdx.map((i) => data.cards[i])
+  const rows = data.rows.map((r) => ({
+    ...r,
+    values: visibleIdx.map((i) => r.values[i]),
+  }))
 
   // Mobile carousel: framer-motion drag, controlled by `index` (leftmost card).
   // ~2 cards visible, step by one. `stride` (card width + gap) is measured from

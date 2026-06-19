@@ -8,7 +8,8 @@
       "./components/Search/Search.webflow.tsx",
       "./components/RemoteForm/RemoteForm.webflow.tsx",
       "./components/RotatingHeadline/RotatingHeadline.webflow.tsx",
-      "./components/CardComparison/CardComparison.webflow.tsx"
+      "./components/CardComparison/CardComparison.webflow.tsx",
+      "./components/CardComparisonFlex/CardComparisonFlex.webflow.tsx"
     ],
     "description": "",
     "id": "lcl-pro-code-components"

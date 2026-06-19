@@ -53,11 +53,6 @@ export function RotatingHeadline({
   const [index, setIndex] = useState(0)
 
   useEffect(() => {
-    // Reset when the list changes so we never point past the end.
-    setIndex(0)
-  }, [values])
-
-  useEffect(() => {
     if (words.length <= 1) return
     const id = setInterval(() => {
       setIndex((i) => (i + 1) % words.length)
@@ -65,7 +60,10 @@ export function RotatingHeadline({
     return () => clearInterval(id)
   }, [words.length, intervalMs])
 
-  const current = words[index] ?? ""
+  // Clamp during render rather than resetting via an effect: if `values`
+  // shrinks, `index` can point past the end until the interval next ticks.
+  const safeIndex = words.length ? index % words.length : 0
+  const current = words[safeIndex] ?? ""
   const offset = reduceMotion ? "0em" : SLIDE
 
   return (
@@ -80,7 +78,7 @@ export function RotatingHeadline({
         <span aria-live="polite" className={styles.live}>
           <AnimatePresence initial={false}>
             <motion.span
-              key={index}
+              key={safeIndex}
               className={styles.word}
               initial={{ y: offset, opacity: 0 }}
               animate={{ y: "0em", opacity: 1 }}

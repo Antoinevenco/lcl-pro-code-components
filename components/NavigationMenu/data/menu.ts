@@ -156,8 +156,14 @@ export const defaultMenu: MenuTree = [
         label: "Simuler",
         variant: "list",
         items: [
-          { label: "Comparateur de compte professionnel", href: "#" },
-          { label: "Comparateur de carte", href: "#" },
+          {
+            label: "Comparateur de compte professionnel",
+            href: "/compte-bancaire-professionnel#comparateur-compte",
+          },
+          {
+            label: "Comparateur de carte",
+            href: "/cartes-bancaires-professionnelles-et-services#comparateur-cartes",
+          },
           {
             label: "Simulateur de statut juridique",
             href: "https://www.entrepreneur.lcl.fr/",

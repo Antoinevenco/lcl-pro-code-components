@@ -43,6 +43,8 @@
   letter-spacing: var(--_text-style---letter-spacing);
   text-transform: var(--_text-style---text-transform, none);
   text-wrap: var(--_text-style---text-wrap);
+  /* Now an <h1>: neutralise the UA heading margin (the hero/section owns spacing). */
+  margin: 0;
 }
 
 .lead {

@@ -67,7 +67,7 @@ export function RotatingHeadline({
   const offset = reduceMotion ? "0em" : SLIDE
 
   return (
-    <span className={`u-text-style-h1 ${styles.root}`}>
+    <h1 className={`u-text-style-h1 ${styles.root}`}>
       {text ? <span className={styles.lead}>{text} </span> : null}
       <span className={styles.rotator}>
         {/* Invisible sizer keeps the line height stable; the animated words are
@@ -90,7 +90,7 @@ export function RotatingHeadline({
           </AnimatePresence>
         </span>
       </span>
-    </span>
+    </h1>
   )
 }
 

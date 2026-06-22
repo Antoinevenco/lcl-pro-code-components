@@ -166,7 +166,7 @@ export const defaultMenu: MenuTree = [
           },
           {
             label: "Simulateur de statut juridique",
-            href: "https://www.entrepreneur.lcl.fr/",
+            href: "https://www.entrepreneur.lcl.fr/outils/simulateur-de-statut-juridique",
           },
         ],
       },
@@ -210,8 +210,14 @@ export const defaultMenu: MenuTree = [
             label: "Simuler",
             variant: "list",
             items: [
-              { label: "Simulateur prêt professionnel", href: "#" },
-              { label: "MAPi : Simulateur aides publiques", href: "#" },
+              {
+                label: "Simulateur de statut juridique",
+                href: "https://www.entrepreneur.lcl.fr/outils/simulateur-de-statut-juridique",
+              },
+              {
+                label: "MAPi : Simulateur aides publiques",
+                href: "https://www.entrepreneur.lcl.fr/services/mapi",
+              },
             ],
           },
         ],
@@ -256,8 +262,14 @@ export const defaultMenu: MenuTree = [
             label: "Simuler",
             variant: "list",
             items: [
-              { label: "Simuler votre cessation d'activité", href: "#" },
-              { label: "Simuler votre coût à l'embauche", href: "#" },
+              {
+                label: "Simuler votre cessation d'activité",
+                href: "https://www.entrepreneur.lcl.fr/outils/simulateur-de-cessation-dactivite",
+              },
+              {
+                label: "Simuler votre coût à l'embauche",
+                href: "https://www.entrepreneur.lcl.fr/outils/simulateur-cout-a-lembauche",
+              },
             ],
           },
         ],
@@ -294,9 +306,12 @@ export const defaultMenu: MenuTree = [
         label: "Métiers",
         variant: "primary",
         items: [
-          { label: "Santé", href: "/professions-liberales-sante" },
           {
-            label: "Chiffre, droit et technique",
+            label: "Professions Libérales : de Santé",
+            href: "/professions-liberales-sante",
+          },
+          {
+            label: "Professions Libérales : Droit, chiffre et technique",
             href: "/professions-liberales-chiffre-droit-justice",
           },
           { label: "Artisans et commerçants", href: "/artisans-commercants" },
@@ -308,8 +323,18 @@ export const defaultMenu: MenuTree = [
         label: "Simuler",
         variant: "list",
         items: [
-          { label: "Simulateur prêt professionnel", href: "#" },
-          { label: "MAPi : Simulateur aides publiques", href: "#" },
+          {
+            label: "Estimer le coût de ma création",
+            href: "https://www.entrepreneur.lcl.fr/outils/simulateur-cout-creation-entreprise",
+          },
+          {
+            label: "MAPi : Simulateur aides publiques",
+            href: "https://www.entrepreneur.lcl.fr/services/mapi",
+          },
+          {
+            label: "Simulateur d'impôts",
+            href: "https://www.entrepreneur.lcl.fr/outils/simulateur-dimpot-sur-les-societes",
+          },
         ],
       },
     ],

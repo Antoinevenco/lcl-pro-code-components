@@ -24,6 +24,10 @@ type WebflowProps = {
   ctaLabel: string
   ctaHref: { href: string; target?: string }
   showSearch: boolean
+  searchSuggestion1: string
+  searchSuggestion2: string
+  searchSuggestion3: string
+  searchSuggestion4: string
   asideComptes: ReactNode
   asideSavoirFaire: ReactNode
   asidePourQui: ReactNode
@@ -42,6 +46,10 @@ function NavigationMenuWebflow({
   ctaLabel,
   ctaHref,
   showSearch,
+  searchSuggestion1,
+  searchSuggestion2,
+  searchSuggestion3,
+  searchSuggestion4,
   asideComptes,
   asideSavoirFaire,
   asidePourQui,
@@ -60,6 +68,14 @@ function NavigationMenuWebflow({
       ctaLabel={ctaLabel}
       ctaHref={ctaHref?.href ?? "#"}
       showSearch={showSearch}
+      searchSuggestions={[
+        searchSuggestion1,
+        searchSuggestion2,
+        searchSuggestion3,
+        searchSuggestion4,
+      ]
+        .map((s) => (s || "").trim())
+        .filter(Boolean)}
       menu={defaultMenu}
       topBarLinks={defaultTopBarLinks}
       espace={{
@@ -105,6 +121,10 @@ export default declareComponent(NavigationMenuWebflow, {
       trueLabel: "Visible",
       falseLabel: "Hidden",
     }),
+    searchSuggestion1: props.Text({ name: "Search · suggestion 1", defaultValue: "Compte pro" }),
+    searchSuggestion2: props.Text({ name: "Search · suggestion 2", defaultValue: "Affacturage" }),
+    searchSuggestion3: props.Text({ name: "Search · suggestion 3", defaultValue: "Monem" }),
+    searchSuggestion4: props.Text({ name: "Search · suggestion 4", defaultValue: "Assurance" }),
     asideComptes: props.Slot({ name: "Cards · Comptes et Opérations" }),
     asideSavoirFaire: props.Slot({ name: "Cards · Nos savoir-faire" }),
     asidePourQui: props.Slot({ name: "Cards · Pour qui ?" }),

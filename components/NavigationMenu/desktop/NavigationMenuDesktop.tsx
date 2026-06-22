@@ -20,6 +20,8 @@ export type NavigationMenuDesktopProps = {
   ctaLabel: string
   ctaHref: string
   showSearch: boolean
+  /** Footer suggestion pills for the search overlay (fed to the shared widget). */
+  searchSuggestions?: string[]
   variant: "wide" | "compact"
   logoHref: string
   espace: EspaceClientConfig
@@ -32,6 +34,7 @@ export function NavigationMenuDesktop({
   ctaLabel,
   ctaHref,
   showSearch,
+  searchSuggestions,
   logoHref,
   espace,
   onMenuOpenChange,
@@ -43,8 +46,8 @@ export function NavigationMenuDesktop({
   // contract as the standalone <Search> component). Auto-load the widget when
   // search is shown so a click opens instantly; idempotent across triggers.
   useEffect(() => {
-    if (showSearch) ensureSearchWidget("lclpro")
-  }, [showSearch])
+    if (showSearch) ensureSearchWidget("lclpro", searchSuggestions)
+  }, [showSearch, searchSuggestions])
 
   // Webflow renders code components as web components with Shadow DOM, and slot
   // content (the designer's card components) lives in the host's *light* DOM,

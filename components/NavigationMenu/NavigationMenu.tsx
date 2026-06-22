@@ -20,6 +20,8 @@ export type NavigationMenuProps = {
   ctaLabel?: string
   ctaHref?: string
   showSearch?: boolean
+  /** The 4 footer suggestion pills for the search overlay (nav search trigger). */
+  searchSuggestions?: string[]
   menu?: MenuTree
   topBarLinks?: TopBarLink[]
   /** Right-aside content per top-level entry (key = entry.label). */
@@ -35,6 +37,7 @@ export function NavigationMenu({
   ctaLabel = "Ouvrir un compte",
   ctaHref = "#",
   showSearch = true,
+  searchSuggestions,
   menu = defaultMenu,
   topBarLinks = defaultTopBarLinks,
   asideSlots,
@@ -82,6 +85,7 @@ export function NavigationMenu({
           ctaLabel={ctaLabel}
           ctaHref={ctaHref}
           showSearch={showSearch}
+          searchSuggestions={searchSuggestions}
           variant={isCompact ? "compact" : "wide"}
           logoHref={logoHref}
           espace={espaceConfig}

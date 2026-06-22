@@ -18,6 +18,10 @@ type WebflowProps = {
   pill4: string
   pill5: string
   pill6: string
+  suggestion1: string
+  suggestion2: string
+  suggestion3: string
+  suggestion4: string
 }
 
 // This file pairs a wrapper component with a `declareComponent(...)` default
@@ -34,6 +38,10 @@ function SearchWebflow({
   pill4,
   pill5,
   pill6,
+  suggestion1,
+  suggestion2,
+  suggestion3,
+  suggestion4,
 }: WebflowProps) {
   return (
     <Search
@@ -46,6 +54,10 @@ function SearchWebflow({
       pill4={pill4}
       pill5={pill5}
       pill6={pill6}
+      suggestion1={suggestion1}
+      suggestion2={suggestion2}
+      suggestion3={suggestion3}
+      suggestion4={suggestion4}
     />
   )
 }
@@ -76,6 +88,10 @@ export default declareComponent(SearchWebflow, {
     pill4: props.Text({ name: "Pill 4 (hero)", defaultValue: "Assurance pro" }),
     pill5: props.Text({ name: "Pill 5 — optional (hero)", defaultValue: "" }),
     pill6: props.Text({ name: "Pill 6 — optional (hero)", defaultValue: "" }),
+    suggestion1: props.Text({ name: "Suggestion 1 (footer)", defaultValue: "Compte pro" }),
+    suggestion2: props.Text({ name: "Suggestion 2 (footer)", defaultValue: "Affacturage" }),
+    suggestion3: props.Text({ name: "Suggestion 3 (footer)", defaultValue: "Monem" }),
+    suggestion4: props.Text({ name: "Suggestion 4 (footer)", defaultValue: "Assurance" }),
   },
   options: {
     // Browser-only: the component dispatches a window CustomEvent on click,

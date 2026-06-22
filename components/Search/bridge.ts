@@ -38,13 +38,17 @@ export function openSearch(
  * SAME environment as the current site (preprod↔preprod, prod↔prod); an
  * explicit window.LCL_SEARCH_WIDGET_SRC overrides the resolution.
  */
-export function ensureSearchWidget(scope: SearchScope) {
+export function ensureSearchWidget(scope: SearchScope, footer?: string[]) {
   const w = window as unknown as {
     __lclSearchWidgetLoaded?: boolean
     __lclSearchWidgetLoading?: boolean
     LCL_SEARCH_SCOPE?: string
     LCL_SEARCH_WIDGET_SRC?: string
+    LCL_SEARCH_FOOTER?: string[]
   }
+  // Footer suggestions, editable from the Search component — set before the
+  // load guard so the latest values are available when the widget initialises.
+  if (footer && footer.length > 0) w.LCL_SEARCH_FOOTER = footer
   // Already loaded, or a load is already in flight: never append twice.
   if (w.__lclSearchWidgetLoaded || w.__lclSearchWidgetLoading) return
   w.__lclSearchWidgetLoading = true

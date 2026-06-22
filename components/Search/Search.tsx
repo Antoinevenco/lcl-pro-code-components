@@ -30,6 +30,11 @@ export type SearchProps = {
   pill4?: string
   pill5?: string
   pill6?: string
+  /** The 4 footer suggestion pills shown at the bottom of the search overlay. */
+  suggestion1?: string
+  suggestion2?: string
+  suggestion3?: string
+  suggestion4?: string
 }
 
 export function Search({
@@ -42,13 +47,21 @@ export function Search({
   pill4 = "Assurance pro",
   pill5 = "",
   pill6 = "",
+  suggestion1 = "Compte pro",
+  suggestion2 = "Affacturage",
+  suggestion3 = "Monem",
+  suggestion4 = "Assurance",
 }: SearchProps) {
   // Auto-load the global overlay widget once — dropping this component is
   // enough, no per-page <script> needed (guarded against double-load inside
-  // ensureSearchWidget). LCL_SEARCH_SCOPE sets the page's default scope.
+  // ensureSearchWidget). LCL_SEARCH_SCOPE sets the page's default scope, and the
+  // 4 suggestions feed the overlay footer via window.LCL_SEARCH_FOOTER.
   useEffect(() => {
-    ensureSearchWidget(searchScope)
-  }, [searchScope])
+    const footer = [suggestion1, suggestion2, suggestion3, suggestion4]
+      .map((s) => (s || "").trim())
+      .filter(Boolean)
+    ensureSearchWidget(searchScope, footer)
+  }, [searchScope, suggestion1, suggestion2, suggestion3, suggestion4])
 
   if (variant === "icon") {
     return (

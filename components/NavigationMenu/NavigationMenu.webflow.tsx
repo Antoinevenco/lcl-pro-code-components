@@ -64,7 +64,7 @@ function NavigationMenuWebflow({
 }: WebflowProps) {
   return (
     <NavigationMenu
-      logoHref={logoHref?.href ?? "/"}
+      logoHref={linkHref(logoHref, "/")}
       ctaLabel={ctaLabel}
       ctaHref={ctaHref?.href ?? "#"}
       showSearch={showSearch}

@@ -83,7 +83,7 @@ export function RotatingHeadline({
               </span>
             ))
           ) : (
-            <span className={styles.ghost}> </span>
+            <span className={styles.ghost}>&nbsp;</span>
           )}
         </span>
         <span aria-live="polite" className={styles.live}>

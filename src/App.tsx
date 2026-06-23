@@ -64,7 +64,7 @@ function App() {
   return (
     <div className="page">
       <NavigationMenu ctaLabel="Ouvrir un compte" ctaHref="#" showSearch />
-      <section style={{ maxWidth: "60rem", margin: "0 auto", padding: "3rem 1rem" }}>
+      <section style={{ maxWidth: "60rem", marginInline: 0, padding: "3rem 1rem", textAlign: "left" }}>
         <RotatingHeadline
           text="la banque de tous les"
           values="entrepreneurs, pro, entrepreneuses, artisans, freelances"

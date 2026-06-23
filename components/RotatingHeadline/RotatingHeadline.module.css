@@ -60,11 +60,21 @@
   vertical-align: baseline;
 }
 
-/* Invisible placeholder that reserves width + height for the current word so
-   the surrounding text and the line box stay put (no layout shift). */
+/* Invisible placeholder that reserves the worst-case footprint across ALL
+   words so the surrounding text and the line box stay put (no layout shift) —
+   not just during a word's animation, but between words too. Every word is a
+   `.ghost` dropped into the same grid cell, so the box grows to the widest AND
+   tallest word. Each ghost wraps like normal text, so the reserved height is
+   the tallest *wrapped* word at the current width, and it recomputes on resize. */
 .sizer {
+  display: grid;
   visibility: hidden;
-  white-space: nowrap;
+}
+
+.ghost {
+  /* All ghosts share one cell → they overlap, and the cell sizes to the max
+     width/height of the set rather than their sum. */
+  grid-area: 1 / 1;
 }
 
 /* Holds the animated words, overlaid on the sizer and clipped to its box. */
@@ -79,7 +89,9 @@
   position: absolute;
   inset: 0;
   display: inline-block;
-  white-space: nowrap;
+  /* No `white-space: nowrap`: `inset: 0` locks the word's width to the sizer's
+     box, so it wraps at the same points as the sizer (same text + font) and the
+     cross-fade stays aligned. */
   /* Rotating word uses the secondary heading color to set it apart from the
      static lead (which is heading-1). */
   color: var(--_theme---text-heading-2);

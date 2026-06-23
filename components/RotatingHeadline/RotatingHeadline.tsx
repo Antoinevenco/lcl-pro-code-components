@@ -70,10 +70,21 @@ export function RotatingHeadline({
     <h1 className={`u-text-style-h1 ${styles.root}`}>
       {text ? <span className={styles.lead}>{text} </span> : null}
       <span className={styles.rotator}>
-        {/* Invisible sizer keeps the line height stable; the animated words are
-            absolutely positioned on top so the box never collapses or jumps. */}
+        {/* Invisible sizer reserves the worst-case footprint: every word is
+            stacked in the same grid cell, so the box sizes to the widest AND
+            tallest (after wrapping) word. The animated words are absolutely
+            positioned on top, so the box never collapses or jumps — no shift
+            during a word's animation, and none between words either. */}
         <span aria-hidden className={styles.sizer}>
-          {current || " "}
+          {words.length ? (
+            words.map((w, i) => (
+              <span key={i} className={styles.ghost}>
+                {w}
+              </span>
+            ))
+          ) : (
+            <span className={styles.ghost}> </span>
+          )}
         </span>
         <span aria-live="polite" className={styles.live}>
           <AnimatePresence initial={false}>

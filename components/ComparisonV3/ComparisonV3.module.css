@@ -1,0 +1,372 @@
+/* =========================================================================
+ * ComparisonV3 — 2-offer comparator, 3 nested slot components
+ * (parent ComparisonV3 > ComparisonSection > ComparisonRow ×3 variants).
+ *
+ * Column alignment across independently-slotted rows is achieved WITHOUT the
+ * parent reading the slots: every grid uses the SAME template
+ *   --cv3-grid = [label | offer1 | offer2]
+ * and the label-column width (--cv3-label-w) is a custom property inherited
+ * from the parent root, so all rows line up.
+ *
+ * Mobile = toggle one offer at a time. The parent root carries
+ * data-cv3-active="0|1"; each offer cell carries data-cv3-col="0|1". Attribute
+ * selectors are NOT scoped by CSS Modules, so the rule below works across the
+ * separate row components (no React context needed, no SSR flash).
+ * ========================================================================= */
+
+.root {
+  --cv3-text: var(--_swatch---swatch--brand-text, #393939);
+  --cv3-muted: var(--_swatch---swatch--brand-text-o60, #6b6b6b);
+  --cv3-blue: var(--_swatch---swatch--brand-blue-600, #3b51d5);
+  --cv3-blue-dark: var(--_swatch---swatch--brand-blue-900, #1f368b);
+  --cv3-white: var(--_swatch---swatch--brand-white, #fff);
+  --cv3-border: var(--_swatch---swatch--brand-neutral-200, #e7e7e7);
+  --cv3-panel: #eef1fc;
+  --cv3-yellow: var(--_swatch---swatch--brand-yellow-400, #f5d020);
+
+  --cv3-label-w: clamp(140px, 24%, 240px);
+  --cv3-grid: var(--cv3-label-w) 1fr 1fr;
+
+  box-sizing: border-box;
+  width: 100%;
+  color: var(--cv3-text);
+  font-family: var(--_typography---font--primary-family, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+  -webkit-font-smoothing: antialiased;
+}
+.root *,
+.root *::before,
+.root *::after {
+  box-sizing: border-box;
+}
+
+/* ---------- Header wrapper (becomes a sticky bar on mobile) ---------- */
+.mobileBar {
+  /* desktop: transparent passthrough; the mobile @media makes it a sticky bar */
+}
+
+/* ---------- Header: 2 offers ---------- */
+.header {
+  display: grid;
+  grid-template-columns: var(--cv3-grid);
+  align-items: stretch;
+  gap: 0;
+  margin-bottom: 14px;
+}
+.headerSpacer {
+  /* empty cell over the label column */
+}
+.offer {
+  position: relative;
+  margin-inline: 8px;
+  background: var(--cv3-white);
+  border: 1px solid var(--cv3-border);
+  border-radius: 16px;
+  padding: 22px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  text-align: center;
+}
+.offerRecommended {
+  border: 2px solid var(--cv3-blue);
+}
+.badge {
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cv3-yellow);
+  color: var(--cv3-blue-dark);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 100vw;
+  white-space: nowrap;
+}
+.offerName {
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.25;
+  color: var(--cv3-blue-dark);
+}
+.cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 11px 18px;
+  border-radius: 100vw;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+.ctaPrimary {
+  background: var(--cv3-blue);
+  color: var(--cv3-white);
+  border: 1.5px solid var(--cv3-blue);
+}
+.ctaPrimary:hover {
+  background: var(--cv3-blue-dark);
+  border-color: var(--cv3-blue-dark);
+}
+.ctaOutline {
+  background: var(--cv3-white);
+  color: var(--cv3-blue);
+  border: 1.5px solid var(--cv3-blue);
+}
+.ctaOutline:hover {
+  background: var(--cv3-blue);
+  color: var(--cv3-white);
+}
+
+/* ---------- Mobile offer toggle (hidden on desktop) ---------- */
+.tabs {
+  display: none;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.tab {
+  flex: 1 1 0;
+  padding: 10px 12px;
+  border-radius: 100vw;
+  border: 1.5px solid var(--cv3-border);
+  background: var(--cv3-white);
+  color: var(--cv3-muted);
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tabActive {
+  border-color: var(--cv3-blue);
+  color: var(--cv3-blue);
+  background: var(--cv3-panel);
+}
+
+/* ---------- Section (category) ---------- */
+.section {
+  background: var(--cv3-white);
+  border-radius: 16px;
+  margin-bottom: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(20, 33, 74, 0.04);
+}
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  font-weight: 700;
+  font-size: 1.02rem;
+  border-bottom: 1px solid var(--cv3-border);
+}
+.sectionIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--cv3-blue);
+  color: var(--cv3-white);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+/* ---------- Row ---------- */
+.row {
+  border-bottom: 1px solid var(--cv3-border);
+}
+.row:last-child {
+  border-bottom: none;
+}
+.rowMain {
+  display: grid;
+  grid-template-columns: var(--cv3-grid);
+  align-items: center;
+}
+.rowLabel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 20px;
+  color: var(--cv3-muted);
+  font-size: 0.9rem;
+  line-height: 1.35;
+  text-align: left;
+}
+button.rowLabel {
+  background: none;
+  border: none;
+  font: inherit;
+  color: var(--cv3-muted);
+  cursor: pointer;
+}
+.chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+.chevronOpen {
+  transform: rotate(180deg);
+}
+.cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 16px 14px;
+  text-align: center;
+}
+.cellMain {
+  font-weight: 600;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  color: var(--cv3-text);
+}
+.cellSub {
+  color: var(--cv3-muted);
+  font-size: 0.78rem;
+  line-height: 1.3;
+  font-weight: 400;
+}
+
+/* ---------- Dropdown panels ---------- */
+.dropdownSplit {
+  display: grid;
+  grid-template-columns: var(--cv3-grid);
+  padding: 0 14px 16px;
+}
+.dropdownMerged {
+  display: grid;
+  grid-template-columns: var(--cv3-label-w) 1fr;
+  padding: 0 14px 16px;
+}
+.spacer {
+  /* empty cell over the label column */
+}
+.panel,
+.mergedPanel {
+  background: var(--cv3-panel);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 0 4px;
+  font-size: 0.85rem;
+  line-height: 1.45;
+  color: var(--cv3-text);
+}
+.mergedIntro {
+  margin: 0 0 12px;
+  text-align: center;
+  color: var(--cv3-muted);
+  font-size: 0.85rem;
+}
+
+/* RichText content rendered inside the panels */
+.panel ul,
+.mergedPanel ul {
+  margin: 0;
+  padding-left: 18px;
+}
+.panel li,
+.mergedPanel li {
+  margin-bottom: 4px;
+}
+.panel a,
+.mergedPanel a {
+  color: var(--cv3-blue);
+  font-weight: 600;
+}
+.panel p:first-child,
+.mergedPanel p:first-child {
+  margin-top: 0;
+}
+.panel p:last-child,
+.mergedPanel p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================================================================
+ * Mobile — one offer at a time (toggle)
+ * ========================================================================= */
+@media (max-width: 860px) {
+  .root {
+    --cv3-label-w: clamp(92px, 30%, 150px);
+  }
+
+  /* Sticky header: offer-card carousel (with peek) + switcher, pinned on scroll */
+  .mobileBar {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    margin-bottom: 10px;
+    padding: 8px 0;
+    background: rgba(255, 255, 255, 0.92);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .header {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    margin-bottom: 0;
+    padding-bottom: 2px;
+  }
+  .header::-webkit-scrollbar {
+    display: none;
+  }
+  .headerSpacer {
+    display: none;
+  }
+  .offer {
+    margin-inline: 0;
+    flex: 0 0 calc(100% - 52px); /* peek of the other card → swipe is discoverable */
+    scroll-snap-align: center;
+    cursor: pointer;
+  }
+  .tabs {
+    display: flex;
+    margin: 10px 0 0;
+  }
+
+  /* Rows: fixed label + the active offer's value, side by side. Both value
+   * cells share grid column 2 (the inactive one is hidden below), so the label
+   * never moves — only the value swaps when you switch offer. */
+  .rowMain {
+    grid-template-columns: var(--cv3-label-w) 1fr;
+  }
+  .cell {
+    grid-column: 2;
+  }
+  .dropdownSplit {
+    grid-template-columns: var(--cv3-label-w) 1fr;
+  }
+  .panel {
+    grid-column: 2;
+    margin: 0;
+  }
+  .dropdownMerged {
+    grid-template-columns: 1fr;
+  }
+  .mergedPanel {
+    margin: 0;
+  }
+  .spacer {
+    display: none;
+  }
+
+  /* Show only the active offer's value (attribute selectors are not
+   * CSS-Module-scoped, so this reaches the separate slotted row components). */
+  [data-cv3-active="0"] [data-cv3-col="1"] {
+    display: none;
+  }
+  [data-cv3-active="1"] [data-cv3-col="0"] {
+    display: none;
+  }
+}

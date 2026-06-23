@@ -9,7 +9,10 @@
       "./components/RemoteForm/RemoteForm.webflow.tsx",
       "./components/RotatingHeadline/RotatingHeadline.webflow.tsx",
       "./components/CardComparison/CardComparison.webflow.tsx",
-      "./components/CardComparisonFlex/CardComparisonFlex.webflow.tsx"
+      "./components/CardComparisonFlex/CardComparisonFlex.webflow.tsx",
+      "./components/ComparisonV3/ComparisonV3.webflow.tsx",
+      "./components/ComparisonV3/ComparisonSection.webflow.tsx",
+      "./components/ComparisonV3/ComparisonRow.webflow.tsx"
     ],
     "description": "",
     "id": "lcl-pro-code-components"

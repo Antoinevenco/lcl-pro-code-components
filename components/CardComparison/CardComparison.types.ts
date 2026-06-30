@@ -13,6 +13,10 @@ export interface CardDef {
    *  mobile card (e.g. Platinum's "Uniquement disponible avec un compte L by LCL").
    *  Travels with the card, so it follows reorders and hides with the column. */
   note?: string
+  /** Per-card CTA button label. Falls back to the shared `rdvLabel` when unset. */
+  ctaLabel?: string
+  /** Per-card CTA button link. Falls back to the shared `rdvUrl` when unset. */
+  ctaHref?: string
 }
 
 export interface CardValue {

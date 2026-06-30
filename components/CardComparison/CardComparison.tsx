@@ -19,7 +19,8 @@ import styles from "./styles"
  */
 
 export interface CardComparisonProps {
-  /** Shared "Prendre rendez-vous" link used by every card button. */
+  /** Shared button link/label — the default for every card's button.
+   *  Overridden per card by `CardDef.ctaHref` / `CardDef.ctaLabel`. */
   rdvUrl?: string
   rdvLabel?: string
   sectionTitle?: string
@@ -162,8 +163,8 @@ export function CardComparison({
             <div className={styles.cardBox} key={i}>
               <CardChip card={card} />
               <span className={styles.cardName}>{card.name}</span>
-              <a className={styles.rdvBtn} href={rdvUrl}>
-                {rdvLabel}
+              <a className={styles.rdvBtn} href={card.ctaHref ?? rdvUrl}>
+                {card.ctaLabel ?? rdvLabel}
               </a>
             </div>
           ))}
@@ -214,8 +215,8 @@ export function CardComparison({
                 <div className={styles.mCardHead}>
                   <CardChip card={card} />
                   <span className={styles.cardName}>{card.name}</span>
-                  <a className={styles.rdvBtn} href={rdvUrl} draggable={false}>
-                    {rdvLabel}
+                  <a className={styles.rdvBtn} href={card.ctaHref ?? rdvUrl} draggable={false}>
+                    {card.ctaLabel ?? rdvLabel}
                   </a>
                   {card.note ? <span className={styles.mCardNote}>{card.note}</span> : null}
                 </div>

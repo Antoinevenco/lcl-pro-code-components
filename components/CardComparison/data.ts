@@ -7,9 +7,33 @@ import type { CardComparisonData } from "./CardComparison.types"
  */
 export const CARD_COMPARISON_DATA: CardComparisonData = {
   cards: [
-    { name: "Carte Visa\nBusiness", theme: "business", network: "VISA", tier: "BUSINESS" },
-    { name: "Carte Visa\nGold Business", theme: "gold", network: "VISA", tier: "Gold BUSINESS" },
-    { name: "Carte\nLCL Excellence", theme: "excellence", network: "Mastercard", tier: "EXCELLENCE" },
+    {
+      name: "Carte Visa\nBusiness",
+      theme: "business",
+      network: "VISA",
+      tier: "BUSINESS",
+      ctaLabel: "Découvrir",
+      ctaHref:
+        "https://www.professionnel.lcl.fr/cartes-bancaires-professionnelles-et-services/carte-visa-business",
+    },
+    {
+      name: "Carte Visa\nGold Business",
+      theme: "gold",
+      network: "VISA",
+      tier: "Gold BUSINESS",
+      ctaLabel: "Découvrir",
+      ctaHref:
+        "https://www.professionnel.lcl.fr/cartes-bancaires-professionnelles-et-services/carte-visa-gold-business",
+    },
+    {
+      name: "Carte\nLCL Excellence",
+      theme: "excellence",
+      network: "Mastercard",
+      tier: "EXCELLENCE",
+      ctaLabel: "Découvrir",
+      ctaHref:
+        "https://www.professionnel.lcl.fr/cartes-bancaires-professionnelles-et-services/carte-lcl-excellence",
+    },
     {
       name: "Carte\nL by LCL Platinum",
       theme: "platinum",

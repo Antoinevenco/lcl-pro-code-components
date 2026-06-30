@@ -75,23 +75,27 @@ export default declareComponent(SearchWebflow, {
     }),
     variant: props.Variant({
       name: "Variant",
-      options: ["hero", "icon"],
+      options: ["bar-pills", "bar", "icon"],
       defaultValue: "icon",
     }),
+    // Content props default to "" on purpose: an empty value falls back to the
+    // scope-appropriate default inside Search.tsx (portail vs lclpro), so the
+    // Portail bar shows Portail suggestions and the LCL Pro bar shows LCL Pro
+    // ones out of the box. Type anything to override.
     placeholder: props.Text({
-      name: "Placeholder (hero)",
-      defaultValue: "Rechercher un produit, un service…",
+      name: "Placeholder — empty = scope default (bar)",
+      defaultValue: "",
     }),
-    pill1: props.Text({ name: "Pill 1 (hero)", defaultValue: "Compte pro" }),
-    pill2: props.Text({ name: "Pill 2 (hero)", defaultValue: "Carte Business" }),
-    pill3: props.Text({ name: "Pill 3 (hero)", defaultValue: "Financement" }),
-    pill4: props.Text({ name: "Pill 4 (hero)", defaultValue: "Assurance pro" }),
-    pill5: props.Text({ name: "Pill 5 — optional (hero)", defaultValue: "" }),
-    pill6: props.Text({ name: "Pill 6 — optional (hero)", defaultValue: "" }),
-    suggestion1: props.Text({ name: "Suggestion 1 (footer)", defaultValue: "Compte pro" }),
-    suggestion2: props.Text({ name: "Suggestion 2 (footer)", defaultValue: "Affacturage" }),
-    suggestion3: props.Text({ name: "Suggestion 3 (footer)", defaultValue: "Monem" }),
-    suggestion4: props.Text({ name: "Suggestion 4 (footer)", defaultValue: "Assurance" }),
+    pill1: props.Text({ name: "Pill 1 — empty = scope default (bar-pills)", defaultValue: "" }),
+    pill2: props.Text({ name: "Pill 2 (bar-pills)", defaultValue: "" }),
+    pill3: props.Text({ name: "Pill 3 (bar-pills)", defaultValue: "" }),
+    pill4: props.Text({ name: "Pill 4 (bar-pills)", defaultValue: "" }),
+    pill5: props.Text({ name: "Pill 5 (bar-pills)", defaultValue: "" }),
+    pill6: props.Text({ name: "Pill 6 (bar-pills)", defaultValue: "" }),
+    suggestion1: props.Text({ name: "Suggestion 1 — empty = scope default (footer)", defaultValue: "" }),
+    suggestion2: props.Text({ name: "Suggestion 2 (footer)", defaultValue: "" }),
+    suggestion3: props.Text({ name: "Suggestion 3 (footer)", defaultValue: "" }),
+    suggestion4: props.Text({ name: "Suggestion 4 (footer)", defaultValue: "" }),
   },
   options: {
     // Browser-only: the component dispatches a window CustomEvent on click,
